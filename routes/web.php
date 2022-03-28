@@ -29,7 +29,7 @@ use Illuminate\Support\Facades\Route;
 
 Route::domain('backoffice.claerious.com')->group(function () {
     Route::get('/', function () {
-        return view('Template.backoffice');
+        return view('Backoffice.dashboard');
     });
 
     // Dashboard Controller
@@ -44,7 +44,6 @@ Route::domain('backoffice.claerious.com')->group(function () {
 
     // Main Backoffice Controller
     Route::controller(mainBackoffice::class)->group(function () {
-        Route::get('/', 'load');
         Route::get('/login', 'load');
     });
 
