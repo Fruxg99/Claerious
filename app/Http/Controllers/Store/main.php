@@ -8,6 +8,6 @@ use Illuminate\Http\Request;
 class main extends Controller
 {
     public function load() {
-        return view('welcome');
+        return view('Store.home');
     }
 }

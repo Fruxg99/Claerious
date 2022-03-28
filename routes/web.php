@@ -27,12 +27,6 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('Backoffice.dashboard');
-});
-
-Route::get('/', [mainBackoffice::class, 'dashboard']);
-
 Route::domain('backoffice.claerious.com')->group(function () {
     Route::get('/', function () {
         return view('Template.backoffice');
