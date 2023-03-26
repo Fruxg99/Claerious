@@ -14,7 +14,7 @@ class AddRatingCountColumnToProductsTable extends Migration
     public function up()
     {
         Schema::table('products', function (Blueprint $table) {
-            $table->integer('rating')->after('weight');
+            $table->integer('rating_count')->after('weight');
         });
     }
 
@@ -26,7 +26,7 @@ class AddRatingCountColumnToProductsTable extends Migration
     public function down()
     {
         Schema::table('products', function (Blueprint $table) {
-            $table->dropColumn('rating');
+            $table->dropColumn('rating_count');
         });
     }
 }
