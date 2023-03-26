@@ -1,3 +1,7 @@
+<?php
+    session_start();
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -7,10 +11,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta name="description" content="">
     <meta name="author" content="">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
 
     <title>@yield('title')</title>
 
     @include('Template.Backoffice.head_content')
+    @include('Template.Backoffice.script')
 
 </head>
 
@@ -67,12 +73,19 @@
                 <div class="modal-body">Apakah Anda yakin ingin keluar?</div>
                 <div class="modal-footer">
                     <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
-                    <a class="btn btn-primary" href="login.html">Keluar</a>
+                    <a class="btn btn-primary" href="/login">Keluar</a>
                 </div>
             </div>
         </div>
     </div>
 
-    @include('Template.Backoffice.script')
+    <script>
+        $.ajaxSetup({
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            }
+        })
+    </script>
+
 </body>
 </html>

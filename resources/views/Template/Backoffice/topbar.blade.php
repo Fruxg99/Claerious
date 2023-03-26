@@ -39,7 +39,7 @@
             data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
             <i class="fas fa-bell fa-fw"></i>
             <!-- Counter - Alerts -->
-            <span class="badge badge-danger badge-counter">3+</span>
+            <span class="badge badge-danger badge-counter">0</span>
         </a>
         <!-- Dropdown - Alerts -->
         <div class="dropdown-list dropdown-menu dropdown-menu-right shadow animated--grow-in"
@@ -90,7 +90,7 @@
             data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
             <i class="fas fa-envelope fa-fw"></i>
             <!-- Counter - Messages -->
-            <span class="badge badge-danger badge-counter">7</span>
+            <span class="badge badge-danger badge-counter">0</span>
         </a>
         <!-- Dropdown - Messages -->
         <div class="dropdown-list dropdown-menu dropdown-menu-right shadow animated--grow-in"
@@ -100,8 +100,7 @@
             </h6>
             <a class="dropdown-item d-flex align-items-center" href="#">
                 <div class="dropdown-list-image mr-3">
-                    <img class="rounded-circle" src="img/undraw_profile_1.svg"
-                        alt="...">
+                    <img class="rounded-circle" alt="...">
                     <div class="status-indicator bg-success"></div>
                 </div>
                 <div class="font-weight-bold">
@@ -112,8 +111,7 @@
             </a>
             <a class="dropdown-item d-flex align-items-center" href="#">
                 <div class="dropdown-list-image mr-3">
-                    <img class="rounded-circle" src="img/undraw_profile_2.svg"
-                        alt="...">
+                    <img class="rounded-circle" alt="...">
                     <div class="status-indicator"></div>
                 </div>
                 <div>
@@ -124,8 +122,7 @@
             </a>
             <a class="dropdown-item d-flex align-items-center" href="#">
                 <div class="dropdown-list-image mr-3">
-                    <img class="rounded-circle" src="img/undraw_profile_3.svg"
-                        alt="...">
+                    <img class="rounded-circle" alt="...">
                     <div class="status-indicator bg-warning"></div>
                 </div>
                 <div>
@@ -136,8 +133,7 @@
             </a>
             <a class="dropdown-item d-flex align-items-center" href="#">
                 <div class="dropdown-list-image mr-3">
-                    <img class="rounded-circle" src="https://source.unsplash.com/Mv9hjnEUHR4/60x60"
-                        alt="...">
+                    <img class="rounded-circle" alt="...">
                     <div class="status-indicator bg-success"></div>
                 </div>
                 <div>
@@ -156,9 +152,8 @@
     <li class="nav-item dropdown no-arrow">
         <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button"
             data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-            <span class="mr-2 d-none d-lg-inline text-gray-600 small">Douglas McGee</span>
-            <img class="img-profile rounded-circle"
-                src="img/undraw_profile.svg">
+            <span class="mr-2 d-none d-lg-inline text-gray-600 small">Admin</span>
+            <img class="img-profile rounded-circle" >
         </a>
         <!-- Dropdown - User Information -->
         <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in"

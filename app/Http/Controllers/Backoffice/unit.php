@@ -7,5 +7,7 @@ use Illuminate\Http\Request;
 
 class unit extends Controller
 {
-    //
+    public function load() {
+        return view('Backoffice.unit');
+    }
 }

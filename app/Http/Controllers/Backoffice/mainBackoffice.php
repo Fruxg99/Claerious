@@ -7,7 +7,11 @@ use Illuminate\Http\Request;
 
 class mainBackoffice extends Controller
 {
-    public function dashboard() {
-        return view('Backoffice.dashboard');
+    public function load() {
+        return view('Backoffice.login');
+    }
+
+    public function login(Request $request) {
+        
     }
 }

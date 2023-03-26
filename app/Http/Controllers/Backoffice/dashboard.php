@@ -8,4 +8,7 @@ use Illuminate\Http\Request;
 class dashboard extends Controller
 {
     //
+    public function load() {
+        return view('Backoffice.dashboard');
+    }
 }

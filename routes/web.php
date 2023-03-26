@@ -5,11 +5,12 @@ use App\Http\Controllers\Backoffice\item;
 use App\Http\Controllers\Backoffice\mainBackoffice;
 use App\Http\Controllers\Backoffice\report;
 use App\Http\Controllers\Backoffice\storefront;
-use App\Http\Controllers\Backoffice\storeSetting;
-use App\Http\Controllers\Backoffice\unit;
 use App\Http\Controllers\Backoffice\variant;
+use App\Http\Controllers\Backoffice\voucher;
+use App\Http\Controllers\GoogleController;
 use App\Http\Controllers\Store\cart;
 use App\Http\Controllers\Store\checkout;
+use App\Http\Controllers\Store\favorite;
 use App\Http\Controllers\Store\main;
 use App\Http\Controllers\Store\home;
 use App\Http\Controllers\Store\product;
@@ -27,65 +28,68 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::domain('backoffice.claerious.com')->group(function () {
-    Route::get('/', function () {
-        return view('Backoffice.dashboard');
-    });
-
+// Route::domain('backoffice.claerious.com')->group(function () {
     // Dashboard Controller
-    Route::controller(dashboard::class)->group(function () {
-        Route::get('/dashboard', 'load');
-    });
+    // Route::controller(dashboard::class)->group(function () {
+    //     Route::get('/dashboard', 'load');
+    // });
 
-    // Item Controller
-    Route::controller(item::class)->group(function () {
-        Route::get('/product', 'load');
-    });
+    // // Item Controller
+    // Route::controller(item::class)->group(function () {
+    //     Route::get('/product', 'load');
+    //     Route::post('/product/{mode}', 'crud');
+    // });
 
-    // Main Backoffice Controller
-    Route::controller(mainBackoffice::class)->group(function () {
-        Route::get('/login', 'load');
-    });
+    // // Main Backoffice Controller
+    // Route::controller(mainBackoffice::class)->group(function () {
+    //     Route::get('/', 'load');
+    // });
 
-    // Report Controller
-    Route::controller(report::class)->group(function () {
-        Route::get('/report', 'load');
-    });
+    // // Report Controller
+    // Route::controller(report::class)->group(function () {
+    //     Route::get('/report', 'load');
+    // });
 
-    // Storefront Controller
-    Route::controller(storefront::class)->group(function () {
-        Route::get('/storefront', 'load');
-    });
+    // // Storefront Controller
+    // Route::controller(storefront::class)->group(function () {
+    //     Route::get('/storefront', 'load');
+    // });
 
-    // Store Setting Controller
-    Route::controller(storeSetting::class)->group(function () {
-        Route::get('/setting', 'load');
-    });
+    // // Voucher Controller
+    // Route::controller(voucher::class)->group(function () {
+    //     Route::get('/voucher', 'load');
+    //     Route::post('/voucher/{mode}', 'crud');
+    // });
+// });
 
-    // Unit Controller
-    Route::controller(unit::class)->group(function () {
-        Route::get('/unit', 'load');
-    });
-
-    // Variant Controller
-    Route::controller(variant::class)->group(function () {
-        Route::get('/variant', 'load');
-    });
-});
-
-Route::domain('www.claerious.com')->group(function () {
-    Route::get('/', function () {
+// Route::domain('www.claerious.store')->group(function () {
+    Route::get('/store', function () {
         return view('Template.store');
     });
+
+    Route::get('/register', [main::class, 'loadRegister']);
+    Route::post('/login', [main::class, 'login']);
+    Route::get('/logout', [main::class, 'logout']);
+
+    // Google Auth
+    Route::get('/auth/google', [GoogleController::class, 'redirectToGoogle']);
+    Route::get('/auth/google/callback', [GoogleController::class, 'handleGoogleCallback']);
 
     // Cart Controller
     Route::controller(cart::class)->group(function () {
         Route::get('/cart', 'load');
+        Route::post('/cart/get-cart', 'getCart');
+        Route::post('/cart/add-to-cart', 'addToCart');
+        Route::post('/cart/update-cart-qty', 'updateCartQty');
+        Route::post('/cart/remove-cart-item', 'removeCartItem');
+        Route::post('/cart/cart-count', 'cartCount');
     });
 
     // Checkout Controller
     Route::controller(checkout::class)->group(function () {
-        Route::get('/checkout', 'load');
+        Route::post('/checkout', 'checkout');
+        Route::post('/checkout/payment-success', 'paymentSuccess');
+        Route::post('/checkout/payment-failed', 'paymentFailed');
     });
 
     // Home Controller
@@ -96,15 +100,49 @@ Route::domain('www.claerious.com')->group(function () {
     // Main Controller
     Route::controller(main::class)->group(function () {
         Route::get('/', 'load');
+
+        Route::get('/register', function() {
+            return view('Store.register');
+        });
+        Route::any('/register-store', 'loadRegisterStore');
+
+        Route::post('/do-register', 'register');
+        Route::post('/do-register-store', 'registerStore');
+        Route::post('/login', 'login');
+
+        Route::get('/profile', 'loadProfile');
+        Route::post('/get-city', 'getCity');
+
+        Route::post('/address/{mode}', 'addressCRUD');
+        Route::post('/shipment/{mode}', 'shipmentCRUD');
+        Route::post('/voucher/{mode}', 'voucherCRUD');
     });
 
     // Product Controller
     Route::controller(product::class)->group(function () {
         Route::get('/product', 'load');
+        Route::get('/product/{product_name}', 'detail');
+        Route::post('/product', 'load');
+        Route::post('/product/filter', 'filter');
+
+        Route::get('/seller/{seller_name}/{seller_id}', 'loadSeller');
+        Route::post('/seller/filter', 'sellerFilter');
     });
 
     // Wishlist Controller
-    Route::controller(wishlis::class)->group(function () {
+    Route::controller(wishlist::class)->group(function () {
         Route::get('/wishlist', 'load');
+        Route::post('/wishlist/add-wishlist', 'addWishlist');
+        Route::post('/wishlist/wishlist-count', 'wishlistCount');
+        Route::post('/wishlist/check-wishlist', 'checkWishlist');
     });
-});
+
+    // Favorite Controller
+    Route::controller(favorite::class)->group(function () {
+        Route::get('/favorite', 'load');
+        Route::post('/favorite/add-favorite', 'addFavorite');
+        Route::post('/favorite/add-favorite-store', 'addFavoriteStore');
+        Route::post('/favorite/favorite-count', 'favoriteCount');
+        Route::post('/favorite/check-favorite', 'checkFavorite');
+    });
+// });
