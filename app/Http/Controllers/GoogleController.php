@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Seller;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Laravel\Socialite\Facades\Socialite;
@@ -30,7 +31,12 @@ class GoogleController extends Controller
             }
 
             if ($user) {
-                $_SESSION["user"] = json_encode($user);
+                $_SESSION["user"]   = json_encode($user);
+
+                $seller = User::where('id_google', $google_user->getId())->join("sellers", "sellers.id_user", "=", "users.id_user")->first();
+                if ($seller) {
+                    $_SESSION["seller"] = json_encode($seller);
+                }
             } else {
                 $new_user                   = new User();
                 $new_user->id_user          = $userID;

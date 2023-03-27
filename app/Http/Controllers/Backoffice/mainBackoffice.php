@@ -26,7 +26,7 @@ class mainBackoffice extends Controller
         $user = User::where("email", $email)->where("password", $password)->join("sellers", "users.id_user", "=", "sellers.id_user")->first();
 
         if ($user !== null) {
-            $_SESSION["user"] = json_encode($user);
+            $_SESSION["seller"] = json_encode($user);
 
             return response()->json([
                 'success' => true,
@@ -38,6 +38,13 @@ class mainBackoffice extends Controller
                 'message' => 'Login Failed!'
             ], 404);
         }
+    }
+
+    public function logout() {
+        session_start();
+        session_destroy();
+
+        return redirect('');
     }
 
     public function crudCategory(Request $request, $mode) {

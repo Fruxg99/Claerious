@@ -111,7 +111,7 @@
         }
 
         function loginGoogle() {
-
+            window.location.href = "{{ url('auth/google') }}"
         }
     </script>
 </body>

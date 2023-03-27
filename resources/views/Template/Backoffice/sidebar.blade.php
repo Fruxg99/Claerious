@@ -22,12 +22,21 @@
         Store
     </div>
 
-    <li class="nav-item">
-        <a class="nav-link" href="{{ url('/category') }}">
-            <i class="fas fa-fw fa-layer-group"></i>
-            <span>Category</span>
-        </a>
-    </li>
+    <?php 
+        if (isset($_SESSION["seller"])) {
+    ?>
+
+        <li class="nav-item">
+            <a class="nav-link" href="{{ url('/category') }}">
+                <i class="fas fa-fw fa-layer-group"></i>
+                <span>Category</span>
+            </a>
+        </li>
+        
+    <?php 
+        }
+    ?>
+    
 
     <li class="nav-item">
         <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
@@ -37,8 +46,6 @@
         <div id="collapseOne" class="collapse" aria-labelledby="product" data-parent="#accordionSidebar">
             <div class="bg-white py-2 collapse-inner rounded">
                 <a class="collapse-item" href="{{ url('/product') }}">Product List</a>
-                <a class="collapse-item" href="{{ url('/storefront') }}">Storefront</a>
-                <a class="collapse-item" href="{{ url('/variant') }}">Variant</a>
             </div>
         </div>
     </li>

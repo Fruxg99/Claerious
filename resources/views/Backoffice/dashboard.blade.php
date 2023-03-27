@@ -16,7 +16,7 @@
             <div class="card-body">
                 <div class="row no-gutters align-items-center">
                     <div class="col mr-2">
-                        <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">Income</div>
+                        <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">Pendapatan</div>
                         <div class="h5 mb-0 font-weight-bold text-gray-800">Rp 0</div>
                     </div>
                     <div class="col-auto">
@@ -33,7 +33,7 @@
             <div class="card-body">
                 <div class="row no-gutters align-items-center">
                     <div class="col mr-2">
-                        <div class="text-xs font-weight-bold text-info text-uppercase mb-1">New Order</div>
+                        <div class="text-xs font-weight-bold text-info text-uppercase mb-1">Pesanan Baru</div>
                         <div class="h5 mb-0 font-weight-bold text-gray-800">0</div>
                     </div>
                     <div class="col-auto">
@@ -50,7 +50,7 @@
             <div class="card-body">
                 <div class="row no-gutters align-items-center">
                     <div class="col mr-2">
-                        <div class="text-xs font-weight-bold text-success text-uppercase mb-1">Order Completed</div>
+                        <div class="text-xs font-weight-bold text-success text-uppercase mb-1">Pesanan Selesai</div>
                         <div class="h5 mb-0 font-weight-bold text-gray-800">0</div>
                     </div>
                     <div class="col-auto">
@@ -67,7 +67,7 @@
             <div class="card-body">
                 <div class="row no-gutters align-items-center">
                     <div class="col mr-2">
-                        <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">New Message</div>
+                        <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">Chat Baru</div>
                         <div class="h5 mb-0 font-weight-bold text-gray-800">0</div>
                     </div>
                     <div class="col-auto">

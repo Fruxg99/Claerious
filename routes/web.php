@@ -15,6 +15,7 @@ use App\Http\Controllers\Store\main;
 use App\Http\Controllers\Store\home;
 use App\Http\Controllers\Store\product;
 use App\Http\Controllers\Store\wishlist;
+use Doctrine\DBAL\Driver\Middleware;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -29,6 +30,10 @@ use Illuminate\Support\Facades\Route;
 */
 
 // Route::domain('backoffice.claerious.store')->group(function () {
+    // Google Auth
+    Route::get('/auth/google', [GoogleController::class, 'redirectToGoogle']);
+    Route::get('/auth/google/callback', [GoogleController::class, 'handleGoogleCallback']);
+
     // Dashboard Controller
     Route::controller(dashboard::class)->group(function () {
         Route::get('/dashboard', 'load');
@@ -36,14 +41,15 @@ use Illuminate\Support\Facades\Route;
 
     // Item Controller
     Route::controller(item::class)->group(function () {
-        Route::get('/product', 'load');
+        Route::any('/product', 'load');
         Route::post('/product/{mode}', 'crud');
     });
 
     // Main Backoffice Controller
     Route::controller(mainBackoffice::class)->group(function () {
-        Route::get('/', 'load');
+        Route::get('/', 'load')->middleware("checkLoginSeller");
         Route::post('/login', 'login');
+        Route::get('/logout', 'logout');
         Route::get('/category', 'loadCategory');
         Route::post('/category/{mode}', 'crudCategory');
     });
@@ -51,11 +57,6 @@ use Illuminate\Support\Facades\Route;
     // Report Controller
     Route::controller(report::class)->group(function () {
         Route::get('/report', 'load');
-    });
-
-    // Storefront Controller
-    Route::controller(storefront::class)->group(function () {
-        Route::get('/storefront', 'load');
     });
 
     // Voucher Controller

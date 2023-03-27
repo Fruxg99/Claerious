@@ -10,3 +10,18 @@
     max-width: 100%;
     max-height: 70vh;
 }
+
+.dropzone {
+	min-height: unset!important;
+	border-radius: 8px;
+	border: 2px dashed #4179E8!important;
+	border-image: none;
+}
+.dz-image {
+	width: unset!important;
+	height: unset!important;
+}
+.dz-image img {
+	width: 100%;
+	max-width: 300px;
+}
