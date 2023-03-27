@@ -3823,3 +3823,27 @@ ol {
 	background-color: #4179e8;
 	transition: 0.2s ease-in-out;
 }
+
+::-webkit-scrollbar {
+    width: 4px;
+}
+::-webkit-scrollbar-track {
+    background-color: #fff;
+}
+::-webkit-scrollbar-thumb {
+    background-color: #4179E8;
+    border-radius: 8px;
+}
+
+.header__account {
+    color: #000!important;
+}
+
+.btn-login-google {
+    border: 1px solid rgb(226, 226, 226);
+}
+
+.login-additional-option {
+    color: #4179E8!important;
+    font-size: 14px;
+}
