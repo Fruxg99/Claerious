@@ -32,16 +32,18 @@ class GoogleController extends Controller
             if ($user) {
                 $_SESSION["user"] = json_encode($user);
             } else {
-                $new_user               = new User();
-                $new_user->id_user      = $userID;
-                $new_user->id_google    = $google_user->getId();
-                $new_user->name         = $google_user->getName();
-                $new_user->email        = $google_user->getEmail();
-                $new_user->password     = "";
-                $new_user->phone        = "";
-                $new_user->gender       = "2";
-                $new_user->saldo        = 0;
-                $new_user->status       = 1;
+                // dd($google_user);
+                $new_user                   = new User();
+                $new_user->id_user          = $userID;
+                $new_user->id_google        = $google_user->getId();
+                $new_user->profile_picture  = $google_user->getAvatar();
+                $new_user->name             = $google_user->getName();
+                $new_user->email            = $google_user->getEmail();
+                $new_user->password         = "";
+                $new_user->phone            = "";
+                $new_user->gender           = "2";
+                $new_user->saldo            = 0;
+                $new_user->status           = 1;
                 $new_user->save();
 
                 $user = User::where('id_google', $google_user->getId())->first();

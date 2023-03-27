@@ -41,16 +41,19 @@
                             <li>
                                 <div class="header__account dropdown" id="accountLogin">
                                     <!-- <i class="fa fa-user"></i> <?= json_decode($_SESSION["user"])->name ?> -->
-                                    <a href="{{ url('/profile') }}" class="dropbtn"><i class="fa fa-user"></i> <?= explode(" ", json_decode($_SESSION["user"])->name)[0] ?></a>
+                                    <a href="{{ url('/profile') }}" class="dropbtn">
+                                        <i class="fa fa-user"></i> 
+                                        <?= explode(" ", json_decode($_SESSION["user"])->name)[0] ?>
+                                    </a>
                                 </div>
 
                                 <div class="dropdown-content">
                                     <div class="row dropdown-profile">
                                         <div class="dropdown-profile-image">
 
-                                            <?php if (isset(json_decode($_SESSION["user"])->thumbnail)) { ?>
+                                            <?php if (isset(json_decode($_SESSION["user"])->profile_picture)) { ?>
 
-                                                <img src="<?= json_decode($_SESSION['user'])->thumbnail ?>">
+                                                <img src="<?= json_decode($_SESSION['user'])->profile_picture ?>">
 
                                             <?php } else { ?>
 

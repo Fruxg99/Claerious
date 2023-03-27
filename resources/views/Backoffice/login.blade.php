@@ -35,32 +35,33 @@
                     <div class="card-body p-0">
                         <!-- Nested Row within Card Body -->
                         <div class="row">
-                            <div class="col-lg-6 d-none d-lg-block bg-login-image"></div>
+                            <div class="col-lg-6">
+                                <div class="d-flex" style="justify-content: center; align-items: center; width: 100%; height: 100%; padding: 40px;">
+                                    <img src="{{ url('assets/image/logo-no-bg.png') }}" style="max-width: 100%;">
+                                </div>
+                            </div>
                             <div class="col-lg-6">
                                 <div class="p-5">
                                     <div class="text-center">
-                                        <h1 class="h4 text-gray-900 mb-4">Welcome Back</h1>
+                                        <h1 class="h4 text-gray-900 mb-4">Masuk</h1>
                                     </div>
                                     <form class="user">
                                         <div class="form-group">
-                                            <input type="email" class="form-control form-control-user"
-                                                id="exampleInputEmail" aria-describedby="emailHelp"
-                                                placeholder="Enter Email">
+                                            <input type="email" class="form-control form-control-user" id="loginEmail" placeholder="Email">
                                         </div>
                                         <div class="form-group">
-                                            <input type="password" class="form-control form-control-user"
-                                                id="exampleInputPassword" placeholder="Password">
+                                            <input type="password" class="form-control form-control-user" id="loginPassword" placeholder="Sandi">
                                         </div>
-                                        <a href="index.html" class="btn btn-primary btn-user btn-block">
-                                            Login
+                                        <a class="btn btn-primary btn-user btn-block" style="cursor: pointer;" onclick="login()">
+                                            Masuk
                                         </a>
                                         <hr>
-                                        <a href="index.html" class="btn btn-google btn-user btn-block">
-                                            <i class="fab fa-google fa-fw"></i> Login with Google
+                                        <a class="btn btn-google btn-user btn-block" style="cursor: pointer;" onclick="loginGoogle()">
+                                            <i class="fab fa-google fa-fw"></i> Masuk dengan Google
                                         </a>
                                     </form>
                                     <div class="text-center mt-3">
-                                        <a class="small" href="forgot-password.html">Forgot Password?</a>
+                                        <a class="small" href="forgot-password.html">Lupa Sandi?</a>
                                     </div>
                                 </div>
                             </div>
@@ -84,6 +85,30 @@
     <!-- Custom scripts for all pages-->
     <script src="{{ url('/sb-admin-2/js/sb-admin-2.min.js') }}"></script>
 
-</body>
+    <script>
+        function login() {
+            let data = {
+                email: $("#loginEmail").val(),
+                password: $("#loginPassword").val()
+            }
 
+            $.ajax({
+                data: data,
+                url: "{{ url('login') }}",
+                method: 'POST',
+                success: function(result) {
+                    console.log(result)
+
+                },
+                error: function (xhr, ajaxOptions, thrownError) {
+                    toastr.error(thrownError)
+                }
+            })
+        }
+
+        function loginGoogle() {
+
+        }
+    </script>
+</body>
 </html>

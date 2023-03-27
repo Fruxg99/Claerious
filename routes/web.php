@@ -28,7 +28,7 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-// Route::domain('backoffice.claerious.com')->group(function () {
+// Route::domain('backoffice.claerious.store')->group(function () {
     // Dashboard Controller
     // Route::controller(dashboard::class)->group(function () {
     //     Route::get('/dashboard', 'load');
@@ -43,6 +43,7 @@ use Illuminate\Support\Facades\Route;
     // // Main Backoffice Controller
     // Route::controller(mainBackoffice::class)->group(function () {
     //     Route::get('/', 'load');
+    //     Route::post('/login', 'login');
     // });
 
     // // Report Controller

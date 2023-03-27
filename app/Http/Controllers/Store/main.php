@@ -152,16 +152,17 @@ class main extends Controller
 
         if ($validated) {
             if (!$checkEmail) {
-                $user               = new User();
-                $user->id_user      = $userID;
-                $user->id_google    = "";
-                $user->name         = $name;
-                $user->email        = $email;
-                $user->password     = $password;
-                $user->phone        = $phone;
-                $user->gender       = $gender;
-                $user->saldo        = 0;
-                $user->status       = 1;
+                $user                   = new User();
+                $user->id_user          = $userID;
+                $user->id_google        = "";
+                $user->profile_picture  = "";
+                $user->name             = $name;
+                $user->email            = $email;
+                $user->password         = $password;
+                $user->phone            = $phone;
+                $user->gender           = $gender;
+                $user->saldo            = 0;
+                $user->status           = 1;
                 $user->save();
 
                 return redirect('/register')->with('success', 'Berhasil mendaftarkan akun. Silahkan kembali ke halaman awal untuk login');
