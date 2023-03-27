@@ -23,6 +23,13 @@
     </div>
 
     <li class="nav-item">
+        <a class="nav-link" href="{{ url('/category') }}">
+            <i class="fas fa-fw fa-layer-group"></i>
+            <span>Category</span>
+        </a>
+    </li>
+
+    <li class="nav-item">
         <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
             <i class="fas fa-fw fa-table"></i>
             <span>Product</span>

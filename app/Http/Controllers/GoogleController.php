@@ -32,7 +32,6 @@ class GoogleController extends Controller
             if ($user) {
                 $_SESSION["user"] = json_encode($user);
             } else {
-                // dd($google_user);
                 $new_user                   = new User();
                 $new_user->id_user          = $userID;
                 $new_user->id_google        = $google_user->getId();

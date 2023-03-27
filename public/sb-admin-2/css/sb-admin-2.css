@@ -9726,7 +9726,6 @@ a.text-dark:hover, a.text-dark:focus {
   }
   tr,
   img {
-    max-width: 100%;
     page-break-inside: avoid;
   }
   p,

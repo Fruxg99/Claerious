@@ -9,7 +9,7 @@
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>Backoffice - Login</title>
+    <title>Backoffice - Masuk</title>
 
     <!-- Custom fonts for this template-->
     <link href="{{ url('/sb-admin-2/vendor/fontawesome-free/css/all.min.css') }}" rel="stylesheet" type="text/css">
@@ -20,6 +20,7 @@
     <!-- Custom styles for this template-->
     <link href="{{ url('/sb-admin-2/css/sb-admin-2.css') }}" rel="stylesheet">
 
+    <meta name="csrf-token" content="{{ csrf_token() }}">
 </head>
 
 <body class="bg-gradient-primary">
@@ -36,7 +37,7 @@
                         <!-- Nested Row within Card Body -->
                         <div class="row">
                             <div class="col-lg-6">
-                                <div class="d-flex" style="justify-content: center; align-items: center; width: 100%; height: 100%; padding: 40px;">
+                                <div class="d-flex" style="justify-content: center; align-items: center; width: 100%; height: 100%; padding: 30px;">
                                     <img src="{{ url('assets/image/logo-no-bg.png') }}" style="max-width: 100%;">
                                 </div>
                             </div>
@@ -68,11 +69,8 @@
                         </div>
                     </div>
                 </div>
-
             </div>
-
         </div>
-
     </div>
 
     <!-- Bootstrap core JavaScript-->
@@ -86,22 +84,28 @@
     <script src="{{ url('/sb-admin-2/js/sb-admin-2.min.js') }}"></script>
 
     <script>
+        $.ajaxSetup({
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            }
+        });
+
         function login() {
             let data = {
                 email: $("#loginEmail").val(),
                 password: $("#loginPassword").val()
             }
-
+            
             $.ajax({
                 data: data,
                 url: "{{ url('login') }}",
                 method: 'POST',
                 success: function(result) {
-                    console.log(result)
-
-                },
-                error: function (xhr, ajaxOptions, thrownError) {
-                    toastr.error(thrownError)
+                    if (result.success) {
+                        window.location = "/dashboard"
+                    } else {
+                        alert("Email atau Kata Sandi Salah")
+                    }
                 }
             })
         }
@@ -111,4 +115,5 @@
         }
     </script>
 </body>
+
 </html>

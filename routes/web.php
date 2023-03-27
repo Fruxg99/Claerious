@@ -30,40 +30,42 @@ use Illuminate\Support\Facades\Route;
 
 // Route::domain('backoffice.claerious.store')->group(function () {
     // Dashboard Controller
-    // Route::controller(dashboard::class)->group(function () {
-    //     Route::get('/dashboard', 'load');
-    // });
+    Route::controller(dashboard::class)->group(function () {
+        Route::get('/dashboard', 'load');
+    });
 
-    // // Item Controller
-    // Route::controller(item::class)->group(function () {
-    //     Route::get('/product', 'load');
-    //     Route::post('/product/{mode}', 'crud');
-    // });
+    // Item Controller
+    Route::controller(item::class)->group(function () {
+        Route::get('/product', 'load');
+        Route::post('/product/{mode}', 'crud');
+    });
 
-    // // Main Backoffice Controller
-    // Route::controller(mainBackoffice::class)->group(function () {
-    //     Route::get('/', 'load');
-    //     Route::post('/login', 'login');
-    // });
+    // Main Backoffice Controller
+    Route::controller(mainBackoffice::class)->group(function () {
+        Route::get('/', 'load');
+        Route::post('/login', 'login');
+        Route::get('/category', 'loadCategory');
+        Route::post('/category/{mode}', 'crudCategory');
+    });
 
-    // // Report Controller
-    // Route::controller(report::class)->group(function () {
-    //     Route::get('/report', 'load');
-    // });
+    // Report Controller
+    Route::controller(report::class)->group(function () {
+        Route::get('/report', 'load');
+    });
 
-    // // Storefront Controller
-    // Route::controller(storefront::class)->group(function () {
-    //     Route::get('/storefront', 'load');
-    // });
+    // Storefront Controller
+    Route::controller(storefront::class)->group(function () {
+        Route::get('/storefront', 'load');
+    });
 
-    // // Voucher Controller
-    // Route::controller(voucher::class)->group(function () {
-    //     Route::get('/voucher', 'load');
-    //     Route::post('/voucher/{mode}', 'crud');
-    // });
+    // Voucher Controller
+    Route::controller(voucher::class)->group(function () {
+        Route::get('/voucher', 'load');
+        Route::post('/voucher/{mode}', 'crud');
+    });
 // });
 
-// Route::domain('www.claerious.store')->group(function () {
+Route::domain('www.claerious.store')->group(function () {
     Route::get('/store', function () {
         return view('Template.store');
     });
@@ -146,4 +148,4 @@ use Illuminate\Support\Facades\Route;
         Route::post('/favorite/favorite-count', 'favoriteCount');
         Route::post('/favorite/check-favorite', 'checkFavorite');
     });
-// });
+});

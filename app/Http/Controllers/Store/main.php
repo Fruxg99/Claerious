@@ -108,7 +108,7 @@ class main extends Controller
             return response()->json([
                 'success' => false,
                 'message' => 'Login Failed!'
-            ], 404);
+            ], 200);
         }
     }
 

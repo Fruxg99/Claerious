@@ -246,13 +246,14 @@
                                 <div class='profile-address-action'>
                                     <button class='btn btn-danger rounded btn-alamat-hapus' onclick='removeShipmentInfo("${result[i].id_address}")'><i class='fas fa-trash-alt'></i></button>
                                 </div>
-                            </div>`
+                            </div><hr>`
                     }
                 } else {
                     html += "<h4 style='opacity: 0.75; margin: 0 32px; text-transform: none;'>Anda belum punya alamat pengiriman</h4>"
                 }
 
                 $("#contentAddress").html(html)
+                $("hr").last().remove()
             }
         })        
     }
