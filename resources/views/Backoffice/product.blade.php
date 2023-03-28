@@ -698,7 +698,7 @@
                 resetModal()
                 showProducts()
 
-                toastr.success("Successfully Remove Product")
+                toastr.success("Berhasil hapus produk")
             },
             error: function (xhr, ajaxOptions, thrownError) {
                 toastr.error(thrownError)

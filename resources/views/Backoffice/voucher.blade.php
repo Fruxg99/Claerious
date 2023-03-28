@@ -141,14 +141,14 @@
                 <h1 style="text-align:center;">
                     <i class="fas fa-trash text-danger"></i>
                 </h1>
-                <div style="text-align:center; font-size: 16pt; font-weight: 700;" class="mb-2 text-danger">Remove Voucher</div>
+                <div style="text-align:center; font-size: 16pt; font-weight: 700;" class="mb-2 text-danger">Hapus Voucher</div>
                 <div style="text-align:center;" class="mb-4" id="deleteVoucherName"></div>
                 <div style="text-align:center;" class="mb-4">
-                    Are you sure to remove this voucher?<br>Removed voucher can't be reverted
+                    Yakin ingin hapus voucher ini?<br>Voucher yang dihapus tidak dapat dikembalikan
                 </div>
                 <div style="text-align: center;">
-                    <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
-                    <button class="btn btn-danger" type="button" id="btnDeleteVoucher" data-dismiss="modal">Remove</button>
+                    <button class="btn btn-secondary" type="button" data-dismiss="modal">Batal</button>
+                    <button class="btn btn-danger" type="button" id="btnDeleteVoucher" data-dismiss="modal">Hapus</button>
                 </div>
             </div>
         </div>
