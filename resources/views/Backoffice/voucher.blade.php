@@ -271,9 +271,9 @@
                     data: "type",
                     render: function(data, type, row) {
                         if (data == "0") {
-                            return "Percentage"
+                            return "Persen Pembelian"
                         } else {
-                            return "Fixed Amount"
+                            return "Potongaan Harga"
                         }
                     }
                 },
