@@ -89,6 +89,23 @@ class main extends Controller
         return json_decode($cities)->rajaongkir->results;
     }
 
+    public function getUser() {
+        session_start();
+
+        $data = [];
+        $data["user"] = User::where("id_user", json_decode($_SESSION["user"])->id_user)->first();
+
+        return json_encode($data);
+    }
+
+    public function setPassword(Request $request) {
+        session_start();
+        
+        $user = User::where("id_user", json_decode($_SESSION["user"])->id_user)->first();
+        $user->password = $request->input("password");
+        $user->save();
+    } 
+
     public function login(Request $request) {
         session_start();
 

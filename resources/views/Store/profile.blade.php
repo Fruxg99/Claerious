@@ -141,6 +141,51 @@
     </div>
 </div>
 
+<div class="modal fade" id="passwordModal" tabindex="-1" role="dialog" aria-labelledby="passwordModal" aria-hidden="true" data-backdrop="static" data-keyboard="false">
+    <div class="modal-dialog"  role="document">
+        <div class="modal-content">
+            <div class="modal-body">
+                <div class="card shadow">
+                    <!-- <form action="{{ url('/add-address') }}" method="POST"> -->
+                        <div class="card-header py-3">
+                            <h5 class="m-0 font-weight-bold text-primary">Buat Kata Sandi</h5>
+                        </div>
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="form-group col-12">
+                                    <label>Kata Sandi<small class="text-danger">*</small></label>
+                                    <div class="input-group">
+                                        <input type="password" class="form-control form-control-user" id="userPass" name="userPass">
+                                        <div class="input-group-append">
+                                            <button class="btn btn-outline-secondary" type="button" onclick="togglePass('userPass')" id="toggle_userPass"><i class="fa-solid fa-eye"></i></button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="form-group col-12">
+                                    <label>Ulangi Kata Sandi<small class="text-danger">*</small></label>
+                                    <div class="input-group">
+                                        <input type="password" class="form-control form-control-user" id="userCPass" name="userCPass">
+                                        <div class="input-group-append">
+                                            <button class="btn btn-outline-secondary" type="button" onclick="togglePass('userCPass')" id="toggle_userCPass"><i class="fa-solid fa-eye"></i></button>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal" onclick="resetModalPassword()">Batal</button>
+                                <button type="button" class="btn btn-primary" onclick="addUserPassword()" id="btnItemModal">Simpan</button>
+                            </div>
+                        </div>
+                    <!-- </form> -->
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
 <div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="deleteModal" aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
@@ -199,7 +244,7 @@
                         <span>Toko</span><span><?= $data["store"]->name ?></span>
                     </div>
                     <div class="profile-biodata-item">
-                        <a href="http://backoffice.claerious.store/">Cek halaman toko</a>
+                        <a style="cursor: pointer;" onclick="checkStore()">Cek halaman toko</a>
                     </div>
 
                 <?php } else { ?>
@@ -411,6 +456,43 @@
         })
     }
 
+    function checkStore() {
+        $.ajax({
+            url: "{{ url('/get-user') }}",
+            method: 'POST',
+            success: function(result) {
+                result = JSON.parse(result)
+                user = result.user
+
+                if (user.password == "") {
+                    $("#passwordModal").modal("show")
+                } else {
+                    window.location.href = 'http://backoffice.claerious.store'
+                }
+            }
+        })
+    }
+
+    function addUserPassword() {
+        let pass = $("#userPass").val()
+        let cpass = $("#userCPass").val()
+
+        if (pass == cpass) {
+            $.ajax({
+                data: {
+                    password: pass
+                },
+                url: "{{ url('/add-password') }}",
+                method: 'POST',
+                success: function(result) {
+                    window.location.href = "http://backoffice.claerious.store/"
+                }
+            })
+        } else {
+            toastr.error("Kata sandi tidak sama")
+        }
+    }
+
     function hideAll() {
         let elements = document.getElementsByClassName("profile-content-detail")
         for(let i = 0 ; i < elements.length ; i++) {
@@ -455,6 +537,21 @@
         $("#btnItemModal").attr("onclick", "addShipmentInfo()")
 
         $(".print-error-msg").css('display','none')
+    }
+
+    function resetModalPassword() {
+        $("#userPass").val("")
+        $("#userCPass").val("")
+    }
+
+    function togglePass(element) {
+        if ($("#" + element).attr("type") == "password") {
+            $("#" + element).attr("type", "text")
+            $("#toggle_" + element).html(`<i class="fa-solid fa-eye-slash"></i>`)
+        } else {
+            $("#" + element).attr("type", "password")
+            $("#toggle_" + element).html(`<i class="fa-solid fa-eye"></i>`)
+        }
     }
 </script>
 
