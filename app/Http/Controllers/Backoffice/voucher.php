@@ -60,7 +60,7 @@ class voucher extends Controller
 
             return $voucherID;
         } else if ($mode == "update") {
-            $update                         = ModelsVoucher::where('id_voucher', json_decode($_SESSION["seller"])->id_seller)->first();
+            $update                         = ModelsVoucher::where('id_voucher', $request->input("id_voucher"))->first();
             $update->type                   = intval($request->input('type'));
             $update->min_purchase           = intval($request->input('min_purchase'));
             $update->max_discount           = intval($request->input('max_discount'));
