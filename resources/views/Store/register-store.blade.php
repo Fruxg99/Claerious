@@ -218,7 +218,7 @@
                             this.removeFile(file)
                             toastr.error("Maksimal ukuran file adalah 200 KB")
                         }
-                        if (extension != "jpeg" && extension != "jpg" ) { // Check if file extension != jpeg or jpg
+                        if (extension != "jpeg" && extension != "jpg" && extension != "png" && extension != "jfif" ) { // Check if file extension != jpeg, jpg, png or jfif
                             this.removeFile(file)
                             toastr.error("Pilih file .jpeg atau .jpg")
                         }
