@@ -482,7 +482,7 @@
         let data = {
             id: ctrPrice,
             minPurchase: newMinPurchase,
-            price: newPrice
+            price: newPrice.split('.').join('')
         }
 
         groupPrice.push(data)
