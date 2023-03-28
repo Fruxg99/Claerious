@@ -1,12 +1,12 @@
 @extends('Template.backoffice')
-@section('title', 'Claerious - Products')
+@section('title', 'Claerious - Produk')
 
 @section('content')
 
 <div class="d-sm-flex align-items-center justify-content-between mb-4">
-    <h1 class="h3 mb-0 text-gray-800">Product</h1>
+    <h1 class="h3 mb-0 text-gray-800">Produk</h1>
     <a href="#" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm" data-toggle="modal" data-target="#itemModal">
-        <i class="fas fa-plus fa-sm text-white-50 mr-2"></i> New Product
+        <i class="fas fa-plus fa-sm text-white-50 mr-2"></i> Tambah Produk
     </a>
 </div>
 
@@ -14,7 +14,7 @@
     <div class="col-12">
         <div class="card shadow">
             <div class="card-header py-3">
-                <h6 class="m-0 font-weight-bold text-primary">Product List</h6>
+                <h6 class="m-0 font-weight-bold text-primary">Daftar Produk</h6>
             </div>
             <div class="card-body">
                 <div class="table-responsive">
@@ -446,7 +446,7 @@
                 resetModal()
                 showProducts()
 
-                toastr.success("Successfully Add New Product")
+                toastr.success("Berhasil tambah produk baru")
             },
             error: function (xhr, ajaxOptions, thrownError) {
                 toastr.error(thrownError)
@@ -626,27 +626,29 @@
     }
 
     function updateProduct() {
-        let data = {
-            id_product: $("#productID").val(),
-            name: $("#productName").val(),
-            description: $("#productDescription").val(),
-            stock: $("#productStock").val().split('.').join(''),
-            price: $("#productPrice").val().split('.').join(''),
-            weight: $("#productWeight").val().split('.').join(''),
-            thumbnail: base64Image
-        }
+        let newData = new FormData()
+        newData.append("id_category", $("#productCategory").val())
+        newData.append("name", $("#productName").val())
+        newData.append("description", $("#productDescription").val())
+        newData.append("stock", $("#productStock").val().split('.').join(''))
+        newData.append("price", $("#productPrice").val().split('.').join(''))
+        newData.append("weight", $("#productWeight").val().split('.').join(''))
+        newData.append("thumbnail", base64Image)
+        newData.append("groupPrice[]", JSON.stringify(groupPrice))
 
         $.ajax({
-            data: data,
+            data: newData,
             url: "{{ url('product/update') }}",
             method: 'POST',
+            processData: false,
+            contentType: false,
             success: function(result) {
                 $("#itemModal").modal("hide")
 
                 resetModal()
                 showProducts()
 
-                toastr.success("Successfully Update Product")
+                toastr.success("Berhasil ubah produk")
             },
             error: function (xhr, ajaxOptions, thrownError) {
                 toastr.error(thrownError)

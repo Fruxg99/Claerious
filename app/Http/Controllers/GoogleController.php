@@ -55,7 +55,7 @@ class GoogleController extends Controller
                 $_SESSION["user"] = json_encode($user);
             }
 
-            return redirect('');
+            return redirect()->back();
 
         } catch (\Throwable $th) {
             dd($th);

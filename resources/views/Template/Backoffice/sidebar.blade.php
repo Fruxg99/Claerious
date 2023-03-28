@@ -2,7 +2,7 @@
 
     <a class="sidebar-brand d-flex align-items-center justify-content-center" href="">
         <div class="sidebar-brand-icon rotate-n-15">
-            <i class="fas fa-laugh-wink"></i>
+            
         </div>
         <div class="sidebar-brand-text mx-3">Claerious</div>
     </a>
@@ -19,7 +19,7 @@
     <hr class="sidebar-divider">
 
     <div class="sidebar-heading">
-        Store
+        Toko
     </div>
 
     <?php 
@@ -29,10 +29,10 @@
         <li class="nav-item">
             <a class="nav-link" href="{{ url('/category') }}">
                 <i class="fas fa-fw fa-layer-group"></i>
-                <span>Category</span>
+                <span>Kategori</span>
             </a>
         </li>
-        
+
     <?php 
         }
     ?>
@@ -41,13 +41,20 @@
     <li class="nav-item">
         <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
             <i class="fas fa-fw fa-table"></i>
-            <span>Product</span>
+            <span>Produk</span>
         </a>
         <div id="collapseOne" class="collapse" aria-labelledby="product" data-parent="#accordionSidebar">
             <div class="bg-white py-2 collapse-inner rounded">
-                <a class="collapse-item" href="{{ url('/product') }}">Product List</a>
+                <a class="collapse-item" href="{{ url('/product') }}">Daftar Produk</a>
             </div>
         </div>
+    </li>
+
+    <li class="nav-item">
+        <a class="nav-link" href="{{ url('/transaction') }}">
+            <i class="fas fa-fw fa-shopping-cart"></i>
+            <span>Transaksi</span>
+        </a>
     </li>
 
     <li class="nav-item">
@@ -60,26 +67,15 @@
     <li class="nav-item">
         <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="true" aria-controls="collapseTwo">
             <i class="fas fa-fw fa-chart-area"></i>
-            <span>Report</span>
+            <span>Laporan</span>
         </a>
         <div id="collapseTwo" class="collapse" aria-labelledby="report" data-parent="#accordionSidebar">
             <div class="bg-white py-2 collapse-inner rounded">
-                <a class="collapse-item" href="buttons.html">Sales Report</a>
+                <a class="collapse-item" href="buttons.html">Laporan Penjualan</a>
             </div>
         </div>
     </li>
 
-    <li class="nav-item">
-        <a class="nav-link" href="#">
-            <i class="fas fa-fw fa-cog"></i>
-            <span>Settings</span>
-        </a>
-    </li>
-
     <hr class="sidebar-divider d-none d-md-block">
-
-    <div class="text-center d-none d-md-inline">
-        <button class="rounded-circle border-0" id="sidebarToggle"></button>
-    </div>
 
 </ul>
