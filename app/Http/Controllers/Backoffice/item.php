@@ -110,6 +110,7 @@ class item extends Controller
 
             return $productID;
         } else if ($mode == "update") {
+            // dd($request);
             $update = Product::where('id_product', $request->input('id_product'))->first();
             $update->id_category        = $request->input("id_category");
             $update->description        = $request->input('description');
@@ -120,14 +121,40 @@ class item extends Controller
             $update->save();
 
             $oldPrices = Group_price::where('id_product', $request->input('id_product'))->delete();
+            $oldImages = Product_thumbnail::where('id_product', $request->input('id_product'))->delete();
             $groupPrices = json_decode($request->input("groupPrice")[0]);
-
+            // dd($groupPrices);
             for($i = 0 ; $i < sizeof($groupPrices) ; $i++) {
                 $newPrice = new Group_price();
                 $newPrice->id_product           = $request->input('id_product');
                 $newPrice->target_accumulation  = $groupPrices[$i]->minPurchase;
                 $newPrice->price                = $groupPrices[$i]->price;
                 $newPrice->save();
+            }
+
+            if ($request->file("file")) {
+                for($i = 0 ; $i < sizeof($request->file("file")) ; $i++) {
+                    // Get filename with extension
+                    $filenamewithextension = $request->file("file")[$i]->getClientOriginalName();
+    
+                    // Get filename without extension
+                    $filename = pathinfo($filenamewithextension, PATHINFO_FILENAME);
+    
+                    // Get file extension
+                    $extemsion = $request->file("file")[$i]->getClientOriginalExtension();
+                    
+                    // Filename to store
+                    $filenametostore = $request->input('id_product') . "-" . ($i + 1) . $extemsion;
+    
+                    // Upload file to S3 Bucket
+                    Storage::disk('s3')->put($filenametostore, fopen($request->file("file")[$i], 'r+'), 'public');
+    
+                    // Insert Product Image to DB
+                    $newImage = new Product_thumbnail();
+                    $newImage->id_product   = $request->input('id_product');
+                    $newImage->thumbnail    = Storage::disk('s3')->url($filenametostore);   // Get image S3 URL
+                    $newImage->save();
+                }
             }
         } else if ($mode == "delete") {
             $delete = Product::where('id_product', $request->input('id_product'))->first();

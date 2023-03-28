@@ -42,7 +42,7 @@
             <div class="modal-body">
                 <div class="card shadow">
                     <div class="card-header py-3">
-                        <h5 class="m-0 font-weight-bold text-primary">Tambah Kategori Baru</h5>
+                        <h5 class="m-0 font-weight-bold text-primary">Kategori</h5>
                         <input type="hidden" class="form-control form-control-user" id="categoryID">
                     </div>
                     <div class="card-body">
@@ -291,7 +291,7 @@
                 $("#previewImage").append(thumbnail)
 
                 // Change Submit Button Event & Text
-                $("#btnCategoryModal").html("Update")
+                $("#btnCategoryModal").html("Simpan")
                 $("#btnCategoryModal").attr("onclick", "updateCategory()")
 
                 $("#categoryModal").modal("show")

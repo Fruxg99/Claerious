@@ -1,12 +1,12 @@
 @extends('Template.backoffice')
-@section('title', 'Claerious - Products')
+@section('title', 'Claerious - Voucher')
 
 @section('content')
 <!-- Page Heading -->
 <div class="d-sm-flex align-items-center justify-content-between mb-4">
     <h1 class="h3 mb-0 text-gray-800">Voucher</h1>
     <a href="#" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm" data-toggle="modal" data-target="#voucherModal">
-        <i class="fas fa-plus fa-sm text-white-50 mr-2"></i> New Voucher
+        <i class="fas fa-plus fa-sm text-white-50 mr-2"></i> Voucher Baru
     </a>
 </div>
 
@@ -15,21 +15,21 @@
     <div class="col-12">
         <div class="card shadow">
             <div class="card-header py-3">
-                <h6 class="m-0 font-weight-bold text-primary">Product List</h6>
+                <h6 class="m-0 font-weight-bold text-primary">Daftar Voucher</h6>
             </div>
             <div class="card-body">
                 <div class="table-responsive">
                     <table class="table table-bordered" id="voucherTable" width="100%" cellspacing="0">
                         <thead>
                             <tr>
-                                <th>Name</th>
-                                <th>Type</th>
-                                <th>Minimal Purchase</th>
-                                <th>Discount Ammount</th>
-                                <th>Discount Percentage</th>
-                                <th>Usage</th>
-                                <th>Effective Date</th>
-                                <th>Option</th>
+                                <th>Nama</th>
+                                <th>Tipe</th>
+                                <th>Minimal Pembelian</th>
+                                <th>Maksimal Potongan</th>
+                                <th>Persen Potongan</th>
+                                <th>Batas Penggunaan</th>
+                                <th>Tanggal Berlaku</th>
+                                <th>Opsi</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -48,24 +48,24 @@
             <div class="modal-body">
                 <div class="card shadow">
                     <div class="card-header py-3">
-                        <h5 class="m-0 font-weight-bold text-primary">New Voucher</h5>
+                        <h5 class="m-0 font-weight-bold text-primary">Voucher</h5>
                         <input type="hidden" class="form-control form-control-user" id="voucherID">
                     </div>
                     <div class="card-body">
                         <div class="row">
                             <div class="form-group col-12">
-                                <label>Voucher Type</label>
+                                <label>Tipe Voucher</label>
                                 <div class="row" style="padding: 0 0.75rem;">
                                     <div class="form-check" style="width: 50%;">
                                         <input class="form-check-input" type="radio" value="0" name="voucherType" id="voucherTypePercentage" checked>
                                         <label class="form-check-label" for="voucherType">
-                                            Percentage
+                                            Persen Pembelian
                                         </label>
                                     </div>
                                     <div class="form-check">
                                         <input class="form-check-input" type="radio" value="1" name="voucherType" id="voucherTypeAmount">
                                         <label class="form-check-label" for="voucherType">
-                                            Fixed Amount
+                                            Potongan Harga
                                         </label>
                                     </div>
                                 </div>
@@ -73,37 +73,37 @@
                         </div>
                         <div class="row">
                             <div class="form-group col-12">
-                                <label>Voucher Name</label>
+                                <label>Nama Voucher</label>
                                 <input type="text" class="form-control form-control-user" id="voucherName">
                             </div>
                         </div>
                         <div class="row">
                             <div class="form-group col-12">
-                                <label>Minimal Purchase</label>
+                                <label>Minimal Pembelian</label>
                                 <input type="text" class="form-control form-control-user" id="voucherMin">
                             </div>
                         </div>
                         <div class="row">
                             <div class="form-group col-12">
-                                <label>Max Discount Amount</label>
+                                <label>Maksimal Potongan</label>
                                 <input type="text" class="form-control form-control-user" id="voucherAmount">
                             </div>
                         </div>
                         <div class="row">
                             <div class="form-group col-12">
-                                <label>Discount Percentage</label>
+                                <label>Persen Potongan</label>
                                 <input type="text" class="form-control form-control-user" id="voucherPercentage">
                             </div>
                         </div>
                         <div class="row">
                             <div class="form-group col-12">
-                                <label>Usage Limit</label>
+                                <label>Batas Penggunaan</label>
                                 <input type="text" class="form-control form-control-user" id="voucherLimit">
                             </div>
                         </div>
                         <div class="row">
                             <div class="form-group col-12">
-                                <label>Effective Date</label>
+                                <label>Tanggal Berlaku</label>
                                 <div class="input-group date" data-provide="datepicker" id="dpStart">
                                     <input type="text" class="form-control" id="voucherStart">
                                     <span class="input-group-addon">
@@ -114,7 +114,7 @@
                         </div>
                         <div class="row">
                             <div class="form-group col-12">
-                                <label>Due Date</label>
+                                <label>Tanggal Expired</label>
                                 <div class="input-group date" data-provide="datepicker" id="dpEnd">
                                     <input type="text" class="form-control" id="voucherEnd">
                                     <span class="input-group-addon">
@@ -124,8 +124,8 @@
                             </div>
                         </div>
                         <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-dismiss="modal" onclick="resetModal()">Cancel</button>
-                            <button type="button" class="btn btn-primary" onclick="addVoucher()" id="btnVoucherModal">Submit</button>
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal" onclick="resetModal()">Batal</button>
+                            <button type="button" class="btn btn-primary" onclick="addVoucher()" id="btnVoucherModal">Simpan</button>
                         </div>
                     </div>
                 </div>
@@ -327,13 +327,13 @@
                                     <a id="optionUpdate" class="dropdown-item" href="#" data-toggle="modal" data-target="#voucherModal" 
                                         onclick="loadVoucher('${row.id_voucher}')">
                                         <i class="fas fa-edit fa-sm fa-fw mr-2 text-gray-400"></i>
-                                        Update Voucher
+                                        Ubah Voucher
                                     </a>
                                     <div class="dropdown-divider"></div>
                                     <a id="optionDelete" class="dropdown-item" href="#" data-toggle="modal" data-target="#deleteModal" 
                                         onclick="deleteVoucherModal('${row.id_voucher}')">
                                         <i class="fas fa-trash fa-sm fa-fw mr-2 text-gray-400"></i>
-                                        Remove Voucher
+                                        Hapus Voucher
                                     </a>
                                 </div>
                             </li>
@@ -375,7 +375,7 @@
                 resetModal()
                 showVouchers()
 
-                toastr.success("Successfully Add New Voucher")
+                toastr.success("Berhasil menambahkan voucher")
             },
             error: function (xhr, ajaxOptions, thrownError) {
                 toastr.error(thrownError)
@@ -432,7 +432,7 @@
                 $("#voucherLimit").trigger("keyup")
 
                 // Change Submit Button Event & Text
-                $("#btnVoucherModal").html("Update")
+                $("#btnVoucherModal").html("Simpan")
                 $("#btnVoucherModal").attr("onclick", "updateVoucher()")
 
                 $("#voucherModal").modal("show")
@@ -474,7 +474,7 @@
                 resetModal()
                 showVouchers()
 
-                toastr.success("Successfully Update Voucher")
+                toastr.success("Berhasil ubah voucher")
             },
             error: function (xhr, ajaxOptions, thrownError) {
                 toastr.error(thrownError)
@@ -515,7 +515,7 @@
                 resetModal()
                 showVouchers()
 
-                toastr.success("Successfully Remove Voucher")
+                toastr.success("Berhasil hapus voucher")
             },
             error: function (xhr, ajaxOptions, thrownError) {
                 toastr.error(thrownError)

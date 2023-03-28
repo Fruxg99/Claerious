@@ -6,7 +6,7 @@
 <div class="d-sm-flex align-items-center justify-content-between mb-4">
     <h1 class="h3 mb-0 text-gray-800">Produk</h1>
     <a href="#" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm" data-toggle="modal" data-target="#itemModal">
-        <i class="fas fa-plus fa-sm text-white-50 mr-2"></i> Tambah Produk
+        <i class="fas fa-plus fa-sm text-white-50 mr-2"></i> Produk Baru
     </a>
 </div>
 
@@ -44,7 +44,7 @@
             <div class="modal-body">
                 <div class="card shadow">
                     <div class="card-header py-3">
-                        <h5 class="m-0 font-weight-bold text-primary">Tambah Produk Baru</h5>
+                        <h5 class="m-0 font-weight-bold text-primary">Produk</h5>
                         <input type="hidden" class="form-control form-control-user" id="productID">
                     </div>
                     <div class="card-body">
@@ -109,7 +109,7 @@
                                         </div>
                                         <div class="mb-3 col-4 px-0">
                                             <button id="btnRemoveImage" class="btn btn-outline-danger btn-sm" type="button" style="width: 100%; height: 100%;">Remove</button>
-                                        </div>
+                                        </div> 
                                     </div>
                                 </div>
                             </div>
@@ -394,13 +394,13 @@
                                     <a id="optionUpdate" class="dropdown-item" href="#" data-toggle="modal" data-target="#itemModal" 
                                         onclick="loadProduct('${row.id_product}')">
                                         <i class="fas fa-edit fa-sm fa-fw mr-2 text-gray-400"></i>
-                                        Update Product
+                                        Ubah Produk
                                     </a>
                                     <div class="dropdown-divider"></div>
                                     <a id="optionDelete" class="dropdown-item" href="#" data-toggle="modal" data-target="#deleteModal" 
                                         onclick="deleteProductModal('${row.id_product}')">
                                         <i class="fas fa-trash fa-sm fa-fw mr-2 text-gray-400"></i>
-                                        Remove Product
+                                        Hapus Produk
                                     </a>
                                 </div>
                             </li>
@@ -412,9 +412,6 @@
     }
 
     function addProduct() {
-        let subImages = Dropzone.forElement("#productSubImage").getAcceptedFiles()
-        console.log(subImages)
-
         let newData = new FormData()
         newData.append("id_category", $("#productCategory").val())
         newData.append("name", $("#productName").val())
@@ -425,6 +422,7 @@
         newData.append("thumbnail", base64Image)
         newData.append("groupPrice[]", JSON.stringify(groupPrice))
 
+        let subImages = Dropzone.forElement("#productSubImage").getAcceptedFiles()
         for (i = 0; i < subImages.length; i++) {
             let file = subImages[i]
 
@@ -557,7 +555,7 @@
                 $("#previewImage").append(thumbnail)
 
                 // Change Submit Button Event & Text
-                $("#btnItemModal").html("Update")
+                $("#btnItemModal").html("Simpan")
                 $("#btnItemModal").attr("onclick", "updateProduct()")
 
                 $("#productCategory").val(result.data.id_category)
@@ -627,6 +625,7 @@
 
     function updateProduct() {
         let newData = new FormData()
+        newData.append("id_product", $("#productID").val())
         newData.append("id_category", $("#productCategory").val())
         newData.append("name", $("#productName").val())
         newData.append("description", $("#productDescription").val())
@@ -635,6 +634,16 @@
         newData.append("weight", $("#productWeight").val().split('.').join(''))
         newData.append("thumbnail", base64Image)
         newData.append("groupPrice[]", JSON.stringify(groupPrice))
+
+        let subImages = Dropzone.forElement("#productSubImage").getAcceptedFiles()
+        for (i = 0; i < subImages.length; i++) {
+            let file = subImages[i]
+
+            var reader = new FileReader();
+            reader.readAsDataURL(file)
+            
+            newData.append("file[]", file)
+        }
 
         $.ajax({
             data: newData,
