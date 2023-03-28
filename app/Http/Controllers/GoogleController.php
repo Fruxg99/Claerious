@@ -9,6 +9,12 @@ use Laravel\Socialite\Facades\Socialite;
 
 class GoogleController extends Controller
 {
+    public function sessionGoogle() {
+        session_start();
+
+        $_SESSION["is_seller"]   = true;
+    }
+
     public function redirectToGoogle() {
         return Socialite::driver('google')->redirect();
     }
@@ -36,27 +42,34 @@ class GoogleController extends Controller
                 $seller = User::where('id_google', $google_user->getId())->join("sellers", "sellers.id_user", "=", "users.id_user")->first();
                 if ($seller) {
                     $_SESSION["seller"] = json_encode($seller);
+                } else {
+                    return redirect('backoffice.claerious.store');
                 }
             } else {
-                $new_user                   = new User();
-                $new_user->id_user          = $userID;
-                $new_user->id_google        = $google_user->getId();
-                $new_user->profile_picture  = $google_user->getAvatar();
-                $new_user->name             = $google_user->getName();
-                $new_user->email            = $google_user->getEmail();
-                $new_user->password         = "";
-                $new_user->phone            = "";
-                $new_user->gender           = "2";
-                $new_user->saldo            = 0;
-                $new_user->status           = 1;
-                $new_user->save();
-
-                $user = User::where('id_google', $google_user->getId())->first();
-                $_SESSION["user"] = json_encode($user);
+                if (!$_SESSION["is_seller"]) {
+                    $new_user                   = new User();
+                    $new_user->id_user          = $userID;
+                    $new_user->id_google        = $google_user->getId();
+                    $new_user->profile_picture  = $google_user->getAvatar();
+                    $new_user->name             = $google_user->getName();
+                    $new_user->email            = $google_user->getEmail();
+                    $new_user->password         = "";
+                    $new_user->phone            = "";
+                    $new_user->gender           = "2";
+                    $new_user->saldo            = 0;
+                    $new_user->status           = 1;
+                    $new_user->save();
+    
+                    $user = User::where('id_google', $google_user->getId())->first();
+                    $_SESSION["user"] = json_encode($user);
+                }
             }
 
-            return redirect()->back();
-
+            if ($_SESSION["is_seller"]) {
+                return redirect('/dashboard');
+            } else {
+                return redirect('');
+            }
         } catch (\Throwable $th) {
             dd($th);
         }

@@ -31,6 +31,7 @@ use Illuminate\Support\Facades\Route;
 
 // Route::domain('backoffice.claerious.store')->group(function () {
     // Google Auth
+    Route::get('/session/seller', [GoogleController::class, 'sessionGoogle']);
     Route::get('/auth/google', [GoogleController::class, 'redirectToGoogle']);
     Route::get('/auth/google/callback', [GoogleController::class, 'handleGoogleCallback']);
 

@@ -111,6 +111,14 @@
         }
 
         function loginGoogle() {
+            $.ajax({
+                url: "{{ url('session/seller') }}",
+                method: 'GET',
+                success: function(result) {
+                    
+                }
+            })
+
             window.location.href = "{{ url('auth/google') }}"
         }
     </script>
