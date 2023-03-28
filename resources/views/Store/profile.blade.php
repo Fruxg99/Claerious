@@ -199,7 +199,7 @@
                         <span>Toko</span><span><?= $data["store"]->name ?></span>
                     </div>
                     <div class="profile-biodata-item">
-                        <a href="backoffice.claerious.store">Cek halaman toko</a>
+                        <a href="http://backoffice.claerious.store/">Cek halaman toko</a>
                     </div>
 
                 <?php } else { ?>
