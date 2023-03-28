@@ -23,7 +23,7 @@ class item extends Controller
         session_start();
 
         if ($mode == "select") {
-            $sellerID = $request->input('id_seller');
+            $sellerID = json_decode($_SESSION["seller"])->id_seller;
             $products = Product::where('id_seller', $sellerID)->get();
 
             $data = [];

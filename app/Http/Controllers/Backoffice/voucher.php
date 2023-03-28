@@ -13,9 +13,10 @@ class voucher extends Controller
     }
 
     public function crud(Request $request, $mode) {
+        session_start();
+        
         if ($mode == "select") {
-            $sellerID = $request->input('id_seller');
-            $vouchers = ModelsVoucher::where('id_seller', $sellerID)->get();
+            $vouchers = ModelsVoucher::where('id_seller', json_decode($_SESSION["seller"])->id_seller)->get();
 
             $data = [];
             $data["data"] = $vouchers;
@@ -44,7 +45,7 @@ class voucher extends Controller
 
             // Insert Voucher to DB
             $data                       = new ModelsVoucher;
-            $data->id_voucher           = $voucherID;
+            $data->id_voucher           = json_decode($_SESSION["seller"])->id_seller;
             $data->id_seller            = $request->input('id_seller');
             $data->name                 = $request->input('name');
             $data->type                 = intval($request->input('type'));
@@ -59,7 +60,7 @@ class voucher extends Controller
 
             return $voucherID;
         } else if ($mode == "update") {
-            $update                         = ModelsVoucher::where('id_voucher', $request->input('id_voucher'))->first();
+            $update                         = ModelsVoucher::where('id_voucher', json_decode($_SESSION["seller"])->id_seller)->first();
             $update->type                   = intval($request->input('type'));
             $update->min_purchase           = intval($request->input('min_purchase'));
             $update->max_discount           = intval($request->input('max_discount'));

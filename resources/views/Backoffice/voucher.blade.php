@@ -248,7 +248,7 @@
                 "url": "/voucher/select",
                 "type": "POST",
                 "data": {
-                    id_seller: "S0001"
+                    id_seller: ""
                 }
             },
             "initComplete": function(settings, json) {
@@ -354,7 +354,6 @@
         }
 
         let data = {
-            id_seller: "S0001",
             name: $("#voucherName").val(),
             type: $('input[name="voucherType"]:checked').val(),
             min_purchase: $("#voucherMin").val().split('.').join(''),
@@ -454,7 +453,6 @@
 
         let data = {
             id_voucher: $("#voucherID").val(),
-            id_seller: "S0001",
             type: $('input[name="voucherType"]:checked').val(),
             min_purchase: $("#voucherMin").val().split('.').join(''),
             max_discount: $("#voucherAmount").val().split('.').join(''),

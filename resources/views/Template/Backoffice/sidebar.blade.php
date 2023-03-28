@@ -23,7 +23,7 @@
     </div>
 
     <?php 
-        if (isset($_SESSION["seller"])) {
+        if (json_decode($_SESSION["seller"])->id_user == "Admin") {
     ?>
 
         <li class="nav-item">

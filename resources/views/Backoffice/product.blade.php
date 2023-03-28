@@ -345,7 +345,7 @@
                 "url": "/product/select",
                 "type": "POST",
                 "data": {
-                    id_seller: "S0001"
+                    id_seller: ""
                 }
             },
             "initComplete": function(settings, json) {
