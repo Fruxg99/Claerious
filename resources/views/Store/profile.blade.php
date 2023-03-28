@@ -42,15 +42,11 @@
                     <div class="profile-content-header-item" onclick="showTab('Group')" id="Group">
                         Grup
                     </div>
-                    <div class="profile-content-header-item" onclick="showTab('Chat')" id="Chat">
-                        Chat
-                    </div>
                 </div>
                 <div class="profile-content-detail" id="contentProfile"></div>
                 <div class="profile-content-detail" id="contentAddress"></div>
                 <div class="profile-content-detail" id="contentTransaction"></div>
                 <div class="profile-content-detail" id="contentGroup"></div>
-                <div class="profile-content-detail" id="contentChat"></div>
             </div>
         </div>
     </div>
@@ -215,8 +211,91 @@
     </div>
 </div>
 
+<div class="modal fade" id="transactionModal" tabindex="-1" role="dialog" aria-labelledby="transactionModal" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content" style="width: 700px;">
+            <div class="modal-body">
+                <div class="card shadow">
+                    <div class="card-header py-3">
+                        <h5 class="m-0 font-weight-bold text-primary">Detail Transaksi</h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="form-group col-12">
+                                <label>Nomor Transaksi</label>
+                                <div class="input-group">
+                                    <input type="text" class="form-control form-control-user" id="transactionID" disabled>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="form-group col-12">
+                                <label>Nama Penerima</label>
+                                <div class="input-group">
+                                    <input type="text" class="form-control form-control-user" id="transactionReceiver" disabled>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="form-group col-12">
+                                <label>Alamat</label>
+                                <div class="input-group">
+                                    <input type="text" class="form-control form-control-user" id="transactionAddress" disabled>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="form-group col-12">
+                                <label>No Telp Penerima</label>
+                                <div class="input-group">
+                                    <input type="text" class="form-control form-control-user" id="transactionPhone" disabled>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-12">
+                                <table class="table">
+                                    <thead>
+                                        <tr>
+                                            <th scope="col">Gambar</th>
+                                            <th scope="col">Nama Produk</th>
+                                            <th scope="col">Penjual</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="tableProductList"></tbody>
+                                </table>
+                            </div>
+                        </div>
+                        <hr>
+                        <div class="row" style="margin-bottom: 8px;">
+                            <div class="col-7">Potongan Voucher</div>
+                            <div class="col-3 text-danger" id="discountPrice"></div>
+                        </div>
+                        <div class="row" style="margin-bottom: 8px;">
+                            <div class="col-7">Biaya Pengiriman</div>
+                            <div class="col-3" id="shipmentPrice"></div>
+                        </div>
+                        <div class="row" style="margin-bottom: 8px;">
+                            <div class="col-7">Biaya Layanan</div>
+                            <div class="col-3">Rp 5.000</div>
+                        </div>
+                        <div class="row">
+                            <div class="col-7"><b>Total</b></div>
+                            <div class="col-3" id="totalPrice" style="font-weight: 700;"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script id="midtrans-script" type="text/javascript" src="https://api.midtrans.com/v2/assets/js/midtrans-new-3ds.min.js" data-environment="sandbox" data-client-key="SB-Mid-client-IRE0d_nhs4Jp2k9o"></script>
+<script type="text/javascript" src="https://app.sandbox.midtrans.com/snap/snap.js" data-client-key="<?= config('midtrans.client_key') ?>"></script>
+
 <script>
     let cityId = "", cityName = ""
+    let profile, transaction, latestTransaction = "-", filterMonth = new Date().getMonth() + 1, filterYear = new Date().getFullYear();
 
     $(document).ready(function() {
 
@@ -321,7 +400,7 @@
                         </div>
                         <div class="col-lg-4 px-0">
                             <div class="input-group date" data-provide="datepicker" id="dateFilter">
-                                <input type="text" class="form-control" name="dateFilter" id="date">
+                                <input type="text" class="form-control" name="dateFilter" id="date" onchange="loadTransaction()">
                                 <span class="input-group-addon" style="width: unset;">
                                     <span class="glyphicon glyphicon-time"></span>
                                 </span>
@@ -348,6 +427,212 @@
             filterMonth = new Date(e.date).getMonth() + 1
             filterYear = new Date(e.date).getFullYear()
         })
+
+        $("#date").trigger("change")
+    }
+
+    function loadTransaction() {
+        $.ajax({
+            url: "profile/transaction/get",
+            method: "POST",
+            data: {
+                month: filterMonth,
+                year: filterYear
+            },
+            success: function(result) {
+                result = JSON.parse(result)
+                historyTrans = result.transaction
+
+                console.log(historyTrans)
+
+                let html = `
+                    <table class="table table-hover" style="margin-top: 12px; text-align: center;">
+                        <thead style="">
+                            <tr>
+                                <th>Tanggal</th>
+                                <th>Penerima</th>
+                                <th>Alamat</th>
+                                <th>Total Bayar</th>
+                                <th>Status</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                `
+                for (let i = 0 ; i < historyTrans.length ; i++) {
+                    html += `
+                            <tr onclick="showDetailTransaction('${historyTrans[i].id_trans}')" style="cursor: pointer;">
+                                <td>${dateFormat(historyTrans[i].created_at)}</td>
+                                <td>${historyTrans[i].receiver_name}</td>
+                                <td>${historyTrans[i].address}</td>
+                                <td>${new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR', maximumFractionDigits: 0 }).format(historyTrans[i].total)}</td>`
+                    
+                    if (historyTrans[i].status == 0) {
+                        html += `<td>Dibatalkan</td>`
+                    } else if (historyTrans[i].status == 1) {
+                        html += `<td>
+                                    Belum Dibayar<br>
+                                    <button class="btn btn-secondary" onclick="payTransaction('${historyTrans[i].id_trans}')">Bayar Sekarang</button>
+                                </td>`
+                    } else if (historyTrans[i].status == 2) {
+                        html += `<td>Menunggu Diproses</td>`
+                    } else if (historyTrans[i].status == 3) {
+                        html += `<td>Sedang Diproses</td>`
+                    } else if (historyTrans[i].status == 4) {
+                        html += `<td>Dalam Pengiriman</td>`
+                    } else if (historyTrans[i].status == 5) {
+                        html += `<td>
+                                    Belum Diulas
+                                    <button class="btn btn-secondary" onclick="addRating('${historyTrans[i].id_trans}')">Beri Ulasan</button>
+                                </td>`
+                    } else if (historyTrans[i].status == 6) {
+                        html += `<td>Terulas</td>`
+                    }
+                    
+                    html += `</tr>`
+                    
+                }
+                html += `
+                        </tbody>
+                    </table>
+                `
+
+                if (historyTrans.length == 0) {
+                    html = `<h3 style="text-align: center; margin: 12px 0 0 0;">Tidak ada transaksi bulan ini</h3>`
+                }
+
+                $("#history").html(html)
+            }
+        })
+    }
+
+    function payTransaction(id_trans) {
+        $.ajax({
+            data: {
+                id_trans: id_trans
+            },
+            url: "{{ url('profile/transaction/selectById') }}",
+            method: 'POST',
+            success: function(result) {
+                result = JSON.parse(result)
+                console.log(result)
+
+                // Trigger snap popup.
+                window.snap.pay(result.snap_token, {
+                    onSuccess: function(result){
+                        $.ajax({
+                            data: {
+                                trans_id: transID
+                            },
+                            url: "{{ url('checkout/payment-success') }}",
+                            method: 'POST',
+                            success: function(result) {
+                                
+                            },
+                            error: function (xhr, ajaxOptions, thrownError) {
+                                toastr.error(thrownError)
+                            }
+                        })
+                    },
+                    onPending: function(result){
+                        
+                    },
+                    onError: function(result){
+                        $.ajax({
+                            data: {
+                                id_trans: transID
+                            },
+                            url: "{{ url('checkout/payment-failed') }}",
+                            method: 'POST',
+                            success: function(result) {
+                                
+                            },
+                            error: function (xhr, ajaxOptions, thrownError) {
+                                toastr.error(thrownError)
+                            }
+                        })
+                    },
+                    onClose: function(){
+                        $.ajax({
+                            data: {
+                                id_trans: transID
+                            },
+                            url: "{{ url('checkout/payment-failed') }}",
+                            method: 'POST',
+                            success: function(result) {
+                                
+                            },
+                            error: function (xhr, ajaxOptions, thrownError) {
+                                toastr.error(thrownError)
+                            }
+                        })
+                    }
+                })
+            },
+            error: function (xhr, ajaxOptions, thrownError) {
+                toastr.error(thrownError)
+            }
+        })
+    }
+
+    function showDetailTransaction(id_trans) {
+        console.log(id_trans)
+
+        $.ajax({
+            url: "profile/transaction/getDetails",
+            method: "POST",
+            data: {
+                id_trans: id_trans
+            },
+            success: function(result) {
+                result = JSON.parse(result)
+                detailTrans = result.transaction[0]
+                detailItems = result.items
+
+                $("#transactionID").val(detailTrans.id_trans)
+                $("#transactionReceiver").val(detailTrans.receiver_name)
+                $("#transactionAddress").val(detailTrans.address + ", " + detailTrans.city_name + ", " + detailTrans.postal_code)
+                $("#transactionPhone").val(detailTrans.receiver_phone)
+
+                $("#transactionModal").modal('show')
+
+                let html = ``
+
+                for(let i = 0 ; i < detailItems.length ; i++) {
+                    html += `<tr>
+                                <td><img src="${detailItems[i].thumbnail}" style="max-width: 100px; max-height: 100px;"></td>
+                                <td>
+                                    ${detailItems[i].product_name}<br>
+                                    ${detailItems[i].qty} x ${new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR', maximumFractionDigits: 0 }).format(detailItems[i].price)}
+                                </td>
+                                <td>${detailItems[i].seller_name}</td>
+                            </tr>`
+                }
+
+                $("#tableProductList").html(html)
+
+                $("#shipmentPrice").html(new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR', maximumFractionDigits: 0 }).format(detailTrans.shipping_cost))
+                $("#discountPrice").html(new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR', maximumFractionDigits: 0 }).format(detailTrans.coupon))
+                $("#totalPrice").html(new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR', maximumFractionDigits: 0 }).format(detailTrans.total))
+
+                console.log(detailTrans)
+                console.log(detailItems)
+            }
+        })
+    }
+
+    function dateFormat(date) {
+        const Months = ['Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni', 'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember']
+        const shortMonths = ['Jan', 'Feb', 'Mar', 'Apr', 'Mei', 'Jun', 'Jul', 'Agst', 'Sept', 'Okt', 'Nov', 'Des']
+        
+        var dt = new Date(date);
+        var dtstring = (dt.getDate()).toString().padStart(2, '0')
+            + '-' + shortMonths[dt.getMonth()]
+            + '-' + dt.getFullYear()
+            + ' ' + (dt.getHours()).toString().padStart(2, '0')
+            + ':' + (dt.getMinutes()).toString().padStart(2, '0')
+            + ':' + (dt.getSeconds()).toString().padStart(2, '0');
+
+        return dtstring
     }
 
     function showGroup() {

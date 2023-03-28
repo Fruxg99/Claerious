@@ -59,15 +59,16 @@ class checkout extends Controller
 
         // Insert Product to Trans Head
         $data_head = new T_head();
-        $data_head->id_trans = $transID;
-        $data_head->id_user = json_decode($_SESSION["user"])->id_user;
-        $data_head->id_group = "";
-        $data_head->coupon = $request->input('coupon');
-        $data_head->shipping_cost = $request->input('shipping');
-        $data_head->total = $request->input('total');
-        $data_head->snap_token = $snapToken;
-        $data_head->expired = Date('y:m:d', strtotime('+1 days'));
-        $data_head->status = 1; // Unpaid
+        $data_head->id_trans        = $transID;
+        $data_head->id_user         = json_decode($_SESSION["user"])->id_user;
+        $data_head->id_address      = $request->input("id_address");
+        $data_head->id_group        = "";
+        $data_head->coupon          = $request->input('coupon');
+        $data_head->shipping_cost   = $request->input('shipping');
+        $data_head->total           = $request->input('total');
+        $data_head->snap_token      = $snapToken;
+        $data_head->expired         = Date('y:m:d', strtotime('+1 days'));
+        $data_head->status          = 1; // Unpaid
         $data_head->save();
 
         for($i = 0 ; $i < sizeof($cart) ; $i++) {
@@ -170,15 +171,16 @@ class checkout extends Controller
 
         // Insert Product to Trans Head
         $data_head = new T_head();
-        $data_head->id_trans = $transID;
-        $data_head->id_user = json_decode($_SESSION["user"])->id_user;
-        $data_head->id_group = $groupID;
-        $data_head->coupon = $request->input('coupon');
-        $data_head->shipping_cost = $request->input('shipping');
-        $data_head->total = $request->input('total');
-        $data_head->snap_token = $snapToken;
-        $data_head->expired = Date('y:m:d', strtotime('+1 days'));
-        $data_head->status = 1; // Unpaid
+        $data_head->id_trans        = $transID;
+        $data_head->id_user         = json_decode($_SESSION["user"])->id_user;
+        $data_head->id_address      = $request->input("id_address");
+        $data_head->id_group        = $groupID;
+        $data_head->coupon          = $request->input('coupon');
+        $data_head->shipping_cost   = $request->input('shipping');
+        $data_head->total           = $request->input('total');
+        $data_head->snap_token      = $snapToken;
+        $data_head->expired         = Date('y:m:d', strtotime('+1 days'));
+        $data_head->status          = 1; // Unpaid
         $data_head->save();
 
         // Insert Each Product to Trans Detail

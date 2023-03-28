@@ -118,6 +118,9 @@ Route::domain('backoffice.claerious.store')->group(function () {
         Route::post('/login', 'login');
 
         Route::get('/profile', 'loadProfile');
+        Route::post('/profile/transaction/{mode}', 'transactionCRUD');
+
+        Route::post('/get-address', 'getAddress');
         Route::post('/get-city', 'getCity');
         Route::post('/get-user', 'getUser');
         Route::post('/add-password', 'setPassword');

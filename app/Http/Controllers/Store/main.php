@@ -9,6 +9,8 @@ use App\Models\Group;
 use App\Models\Group_members;
 use App\Models\Product;
 use App\Models\Seller;
+use App\Models\T_detail;
+use App\Models\T_head;
 use App\Models\User;
 use App\Models\Voucher;
 use Illuminate\Http\Request;
@@ -61,6 +63,10 @@ class main extends Controller
         $data["provinces"]  = json_decode($provinces)->rajaongkir->results;
 
         return view('Store.register-store', ["data" => $data]);
+    }
+
+    public function getAddress() {
+
     }
 
     public function getCity(Request $request) {
@@ -366,6 +372,11 @@ class main extends Controller
         } else if ($mode == "delete") {
             $delete = Address::where('id_address', $request->input('id_address'))->first();
             $delete->delete();
+        } else if ($mode == "selectById") {
+            $address = Address::where('id_address', $request->input('id_address'))->first();
+            $address->delete();
+
+            return json_encode($address);
         }
     }
 
@@ -511,6 +522,45 @@ class main extends Controller
 
         } else if ($mode == "delete") {
             
+        }
+    }
+
+    public function transactionCRUD(Request $request, $mode) {
+        session_start();
+
+        if ($mode == "get") {
+            $data = [];
+            $data["transaction"] = T_head::select("t_heads.id_trans", "addresses.receiver_name", "addresses.address", "t_heads.created_at", "t_heads.total", "t_heads.status")
+                                    ->where("t_heads.id_user", json_decode($_SESSION["user"])->id_user)
+                                    ->whereMonth("t_heads.created_at", $request->input("month"))
+                                    ->whereYear("t_heads.created_at", $request->input("year"))
+                                    ->leftJoin("addresses", "addresses.id_address", "=", "t_heads.id_address")
+                                    ->get();
+
+            return json_encode($data);
+        } else if ($mode == "selectById") {
+            $transaction = T_head::where("id_trans", $request->input("id_trans"))->first();
+            
+            return json_encode($transaction);
+        } else if ($mode == "update") {
+
+        } else if ($mode == "delete") {
+            
+        } else if ($mode == "getDetails") {
+            $data = [];
+            $data["transaction"]    = T_head::where("t_heads.id_user", json_decode($_SESSION["user"])->id_user)
+                                        ->where("t_heads.id_trans", $request->input("id_trans"))
+                                        ->leftJoin("addresses", "addresses.id_address", "=", "t_heads.id_address")
+                                        ->get();
+            $data["items"]          = T_detail::select("products.thumbnail", "products.name as product_name", "t_details.qty", "products.price", "sellers.name as seller_name")
+                                        ->where("t_details.id_trans", $request->input("id_trans"))
+                                        ->leftJoin("products", "products.id_product", "=", "t_details.id_product")
+                                        ->leftJoin("sellers", "sellers.id_seller", "=", "t_details.id_seller")
+                                        ->orderBy("sellers.id_seller")
+                                        ->get();
+            // $data["items"]          = T_detail::where("t_details.id_trans", $request->input("id_trans"))->get();
+
+            return json_encode($data);
         }
     }
 }

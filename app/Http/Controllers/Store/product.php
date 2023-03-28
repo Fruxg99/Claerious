@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Store;
 
 use App\Http\Controllers\Controller;
+use App\Models\Address;
 use App\Models\Category;
 use App\Models\Group;
 use App\Models\Group_price;
@@ -36,7 +37,32 @@ class product extends Controller
     public function loadGroupPayment(Request $request) {
         session_start();
 
+        $curl = curl_init();
+
+        curl_setopt_array($curl, array(
+            CURLOPT_URL => "https://api.rajaongkir.com/starter/province",
+            CURLOPT_RETURNTRANSFER => true,
+            CURLOPT_ENCODING => "",
+            CURLOPT_MAXREDIRS => 10,
+            CURLOPT_TIMEOUT => 30,
+            CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+            CURLOPT_CUSTOMREQUEST => "GET",
+            CURLOPT_HTTPHEADER => array(
+                "key: 5752982e47b4c3890af7becf4181bffa"
+            ),
+        ));
+
+        $provinces = curl_exec($curl);
+        $err = curl_error($curl);
+
+        curl_close($curl);
+
+        if ($err) {
+            echo "cURL Error #:" . $err;
+        }
+
         $data = [];
+        $data["address"]        = Address::where("id_user", json_decode($_SESSION["user"])->id_user)->get();
         $data["categories"]     = Category::all();
         $data["cart"]           = ModelsProduct::select("products.id_product","products.thumbnail", "products.name", "products.price", "products.weight", "sellers.id_seller", "sellers.name as seller_name", "sellers.profile_picture")
                                     ->where("products.id_product", $request->input("productID"))
@@ -47,6 +73,7 @@ class product extends Controller
         $data["qty"]            = str_replace('.', '', $request->input("groupQtyPurchase"));
         $data["leader"]         = $request->input("leaderID");
         $data["groupID"]        = $request->input("groupID");
+        $data["provinces"]      = json_decode($provinces)->rajaongkir->results;
 
         return view('Store.group-payment', ["data" => $data]);
     }
@@ -54,7 +81,32 @@ class product extends Controller
     public function loadJoinGroupPayment(Request $request) {
         session_start();
 
+        $curl = curl_init();
+
+        curl_setopt_array($curl, array(
+            CURLOPT_URL => "https://api.rajaongkir.com/starter/province",
+            CURLOPT_RETURNTRANSFER => true,
+            CURLOPT_ENCODING => "",
+            CURLOPT_MAXREDIRS => 10,
+            CURLOPT_TIMEOUT => 30,
+            CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+            CURLOPT_CUSTOMREQUEST => "GET",
+            CURLOPT_HTTPHEADER => array(
+                "key: 5752982e47b4c3890af7becf4181bffa"
+            ),
+        ));
+
+        $provinces = curl_exec($curl);
+        $err = curl_error($curl);
+
+        curl_close($curl);
+
+        if ($err) {
+            echo "cURL Error #:" . $err;
+        }
+
         $data = [];
+        $data["address"]        = Address::where("id_user", json_decode($_SESSION["user"])->id_user)->get();
         $data["categories"]     = Category::all();
         $data["cart"]           = ModelsProduct::select("products.id_product","products.thumbnail", "products.name", "products.price", "products.weight", "sellers.id_seller", "sellers.name as seller_name", "sellers.profile_picture")
                                     ->where("products.id_product", $request->input("productID"))
@@ -65,6 +117,7 @@ class product extends Controller
         $data["qty"]            = str_replace('.', '', $request->input("joinQtyPurchase"));
         $data["leader"]         = $request->input("leaderID");
         $data["groupID"]        = $request->input("groupID");
+        $data["provinces"]      = json_decode($provinces)->rajaongkir->results;
 
         return view('Store.group-payment', ["data" => $data]);
     }
