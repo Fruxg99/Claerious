@@ -85,27 +85,29 @@ class item extends Controller
                 $newPrice->save();
             }
 
-            for($i = 0 ; $i < sizeof($request->file("file")) ; $i++) {
-                // Get filename with extension
-                $filenamewithextension = $request->file("file")[$i]->getClientOriginalName();
+            if ($request->file("file")) {
+                for($i = 0 ; $i < sizeof($request->file("file")) ; $i++) {
+                    // Get filename with extension
+                    $filenamewithextension = $request->file("file")[$i]->getClientOriginalName();
 
-                // Get filename without extension
-                $filename = pathinfo($filenamewithextension, PATHINFO_FILENAME);
+                    // Get filename without extension
+                    $filename = pathinfo($filenamewithextension, PATHINFO_FILENAME);
 
-                // Get file extension
-                $extemsion = $request->file("file")[$i]->getClientOriginalExtension();
-                
-                // Filename to store
-                $filenametostore = $productID . "-" . ($i + 1) . $extemsion;
+                    // Get file extension
+                    $extemsion = $request->file("file")[$i]->getClientOriginalExtension();
+                    
+                    // Filename to store
+                    $filenametostore = $productID . "-" . ($i + 1) . $extemsion;
 
-                // Upload file to S3 Bucket
-                Storage::disk('s3')->put($filenametostore, fopen($request->file("file")[$i], 'r+'), 'public');
+                    // Upload file to S3 Bucket
+                    Storage::disk('s3')->put($filenametostore, fopen($request->file("file")[$i], 'r+'), 'public');
 
-                // Insert Product Image to DB
-                $newImage = new Product_thumbnail();
-                $newImage->id_product   = $productID;
-                $newImage->thumbnail    = Storage::disk('s3')->url($filenametostore);   // Get image S3 URL
-                $newImage->save();
+                    // Insert Product Image to DB
+                    $newImage = new Product_thumbnail();
+                    $newImage->id_product   = $productID;
+                    $newImage->thumbnail    = Storage::disk('s3')->url($filenametostore);   // Get image S3 URL
+                    $newImage->save();
+                }
             }
 
             return $productID;
