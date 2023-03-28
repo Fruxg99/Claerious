@@ -39,11 +39,13 @@ class GoogleController extends Controller
             if ($user) {
                 $_SESSION["user"]   = json_encode($user);
 
-                $seller = User::where('id_google', $google_user->getId())->join("sellers", "sellers.id_user", "=", "users.id_user")->first();
-                if ($seller) {
-                    $_SESSION["seller"] = json_encode($seller);
-                } else {
-                    return redirect('backoffice.claerious.store');
+                if ($_SESSION["is_seller"]) {
+                    $seller = User::where('id_google', $google_user->getId())->join("sellers", "sellers.id_user", "=", "users.id_user")->first();
+                    if ($seller) {
+                        $_SESSION["seller"] = json_encode($seller);
+                    } else {
+                        return redirect('backoffice.claerious.store');
+                    }
                 }
             } else {
                 if (!$_SESSION["is_seller"]) {
