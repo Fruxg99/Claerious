@@ -45,8 +45,8 @@ class voucher extends Controller
 
             // Insert Voucher to DB
             $data                       = new ModelsVoucher;
-            $data->id_voucher           = json_decode($_SESSION["seller"])->id_seller;
-            $data->id_seller            = $request->input('id_seller');
+            $data->id_voucher           = $voucherID;
+            $data->id_seller            = json_decode($_SESSION["seller"])->id_seller;
             $data->name                 = $request->input('name');
             $data->type                 = intval($request->input('type'));
             $data->min_purchase         = intval($request->input('min_purchase'));
