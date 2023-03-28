@@ -95,6 +95,8 @@ Route::domain('backoffice.claerious.store')->group(function () {
         Route::post('/checkout', 'checkout');
         Route::post('/checkout/payment-success', 'paymentSuccess');
         Route::post('/checkout/payment-failed', 'paymentFailed');
+
+        Route::post('/group/checkout', 'checkoutGroup');
     });
 
     // Home Controller
@@ -123,6 +125,8 @@ Route::domain('backoffice.claerious.store')->group(function () {
         Route::post('/address/{mode}', 'addressCRUD');
         Route::post('/shipment/{mode}', 'shipmentCRUD');
         Route::post('/voucher/{mode}', 'voucherCRUD');
+        Route::post('/group/{mode}', 'groupCRUD');
+
     });
 
     // Product Controller
@@ -131,6 +135,10 @@ Route::domain('backoffice.claerious.store')->group(function () {
         Route::get('/product/{product_name}', 'detail');
         Route::post('/product', 'load');
         Route::post('/product/filter', 'filter');
+        Route::post('/product/get-prices', 'getPrices');
+        Route::post('/product/get-group', 'getGroup');
+        Route::post('/product/group/payment', 'loadGroupPayment');
+        Route::post('/product/group/join', 'loadJoinGroupPayment');
 
         Route::get('/seller/{seller_name}/{seller_id}', 'loadSeller');
         Route::post('/seller/filter', 'sellerFilter');
@@ -148,7 +156,6 @@ Route::domain('backoffice.claerious.store')->group(function () {
     Route::controller(favorite::class)->group(function () {
         Route::get('/favorite', 'load');
         Route::post('/favorite/add-favorite', 'addFavorite');
-        Route::post('/favorite/add-favorite-store', 'addFavoriteStore');
         Route::post('/favorite/favorite-count', 'favoriteCount');
         Route::post('/favorite/check-favorite', 'checkFavorite');
     });

@@ -39,10 +39,18 @@
                     <div class="profile-content-header-item" onclick="showTab('Transaction')" id="Transaction">
                         Riwayat Transaksi
                     </div>
+                    <div class="profile-content-header-item" onclick="showTab('Group')" id="Group">
+                        Grup
+                    </div>
+                    <div class="profile-content-header-item" onclick="showTab('Chat')" id="Chat">
+                        Chat
+                    </div>
                 </div>
                 <div class="profile-content-detail" id="contentProfile"></div>
                 <div class="profile-content-detail" id="contentAddress"></div>
                 <div class="profile-content-detail" id="contentTransaction"></div>
+                <div class="profile-content-detail" id="contentGroup"></div>
+                <div class="profile-content-detail" id="contentChat"></div>
             </div>
         </div>
     </div>
@@ -342,6 +350,46 @@
         })
     }
 
+    function showGroup() {
+        $.ajax({
+            url: "{{ url('group/get') }}",
+            method: 'POST',
+            success: function(result) {
+                result = JSON.parse(result)
+
+                let html = `
+                    <div style="margin-top: 12px;">` +
+                        `<button class="btn btn-primary rounded" style="background-color: #4179E8; border: none; outline: none; margin: 0 12px 0 auto; display: block;" data-toggle="modal" data-target="#addressModal">` +
+                            `<i class="fas fa-plus" style="margin-right: 7px;"></i> Tambah Alamat` +
+                        `</button>` +
+                    `</div>
+                `;
+
+                if (result.length > 0) {
+                    for(let i = 0 ; i < result.length ; i++) {
+                        html += 
+                            `<div class='profile-address'>
+                                <div class='list-alamat-content'>
+                                    <div style="font-weight: 600;">${result[i].label}</div>
+                                    <div style="font-size: 14px;">${result[i].receiver_name}</div>
+                                    <div style="font-size: 14px;">${result[i].address}, ${result[i].city_name}</div>
+                                    <div style="font-size: 14px;">${result[i].receiver_phone}</div>
+                                </div>
+                                <div class='profile-address-action'>
+                                    <button class='btn btn-danger rounded btn-alamat-hapus' onclick='removeShipmentInfo("${result[i].id_address}")'><i class='fas fa-trash-alt'></i></button>
+                                </div>
+                            </div><hr>`
+                    }
+                } else {
+                    html += "<h4 style='opacity: 0.75; margin: 0 32px; text-transform: none;'>Anda belum punya alamat pengiriman</h4>"
+                }
+
+                $("#contentAddress").html(html)
+                $("hr").last().remove()
+            }
+        })
+    }
+
     function showTab(id) {
         hideAll()
         removeHeaderFocus()
@@ -352,8 +400,12 @@
             showProfile()
         } else if (id == "Address") {
             showAddress()
-        } else {
+        } else if (id == "Transaction") {
             showTransaction()
+        } else if (id =="Group") {
+
+        } else {
+
         }
     }
 

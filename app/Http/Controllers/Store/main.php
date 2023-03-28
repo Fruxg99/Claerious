@@ -5,6 +5,8 @@ namespace App\Http\Controllers\Store;
 use App\Http\Controllers\Controller;
 use App\Models\Address;
 use App\Models\Category;
+use App\Models\Group;
+use App\Models\Group_members;
 use App\Models\Product;
 use App\Models\Seller;
 use App\Models\User;
@@ -481,6 +483,26 @@ class main extends Controller
             $data["weight"]         = $request->input("weight");
 
             return $courier;
+        } else if ($mode == "selectById") {
+            $voucher = Voucher::where("id_voucher", $request->input("id_voucher"))->first();
+            
+            return $voucher;
+        } else if ($mode == "update") {
+
+        } else if ($mode == "delete") {
+            
+        }
+    }
+
+    public function groupCRUD(Request $request, $mode) {
+        session_start();
+
+        if ($mode == "get") {
+            $groups = Group_members::where("id_user", json_decode($_SESSION["user"])->id_user)
+                        ->join("groups", "groups.id_gruop", "=", "group_members.id_group")
+                        ->get();
+
+            return $groups;
         } else if ($mode == "selectById") {
             $voucher = Voucher::where("id_voucher", $request->input("id_voucher"))->first();
             

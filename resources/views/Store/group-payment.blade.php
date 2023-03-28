@@ -1,5 +1,5 @@
 @extends('Template.store')
-@section('title', 'Claerious - Products')
+@section('title', 'Claerious - Pembayaran')
 
 @section('content')
 
@@ -21,98 +21,58 @@
                                 <th>Harga</th>
                                 <th>Kuantitas</th>
                                 <th>Total</th>
-                                <th></th>
                             </tr>
                         </thead>
                         <tbody id="tableCart">
-
-                            <?php 
-                            
-                                $old_seller_id = "";
-                                for($i = 0 ; $i < sizeof($data["cart"]) ; $i++) { 
-                                    if ($old_seller_id != $data["cart"][$i]["id_seller"]) { 
-                                        if ($i != 0) {?>
-
-                                            <tr id="shipment-row-<?= $old_seller_id ?>">
-                                                <td class="shoping__cart__item" style="padding: 10px 0;">
-                                                    <h5 style="font-size: 16px; font-weight:700; text-align: left; margin-bottom: 0.5rem;">Jenis Pengiriman</h5>
-                                                    <select class="form-select shipment-option" id="shipment-<?= $old_seller_id ?>" onchange='updateTotalPrice()'>
-                                                        <option selected disabled>Pilih Pengiriman</option>
-                                                    </select>
-                                                </td>
-                                                <td class="shoping__cart__price"></td>
-                                                <td class="shoping__cart__quantity" colspan="3">
-                                                    <h5 style="font-size: 16px; font-weight:700; text-align: left; margin-bottom: 0.5rem;">Kupon Toko</h5>
-                                                    <div class="transaction-voucher" id="voucher-<?= $old_seller_id ?>">
-                                                        <div class="transaction-voucher-button" data-toggle="modal" data-target="#modalVoucher" onclick='loadVouchers("<?= $old_seller_id ?>")'><span><i class="fas fa-tags"></i> Lebih hemat pakai kupon</span><i class="fas fa-angle-right font-20"></i></div>
-                                                    </div>
-                                                    <input type="hidden" class="discount-voucher" id="discount-<?= $old_seller_id ?>" value="0">
-                                                </td>
-                                            </tr>
-
-                                    <?php      
-
-                                        }
-                                        $old_seller_id = $data["cart"][$i]["id_seller"];
-
-                                    ?>
-
-                                        <tr id="seller-row-<?= $data["cart"][$i]["id_seller"] ?>">
-                                            <td class="shoping__cart__item" colspan="5" style="padding: 10px 0;">
-                                                <img src="<?= $data["cart"][$i]["profile_picture"] ?>" alt="" class="store__image">
-                                                <h5 style="font-size: 20px; font-weight: 700;"><?= $data["cart"][$i]["seller_name"] ?></h5>
-                                            </td>
-                                        </tr>
-
-                                    <?php } ?>
+                            <tr>
+                                <td class="shoping__cart__item" colspan="5" style="padding: 10px 0;">
+                                    <img src="<?= $data["cart"]["profile_picture"] ?>" alt="" class="store__image">
+                                    <h5 style="font-size: 20px; font-weight: 700;"><?= $data["cart"]["seller_name"] ?></h5>
+                                </td>
+                            </tr>
                                         
-                                        <tr id="cart-row-<?= $i ?>" name="cart-<?= $data["cart"][$i]["id_seller"] ?>">
-                                            <td class="shoping__cart__item">
-                                                <img src="<?= $data["cart"][$i]["thumbnail"] ?>" alt="" style="max-width: 100px;">
-                                                <h5><?= $data["cart"][$i]["name"] ?></h5>
-                                            </td>
-                                            <td class="shoping__cart__price" id="price-<?= $i ?>">
-                                                Rp <?= number_format($data["cart"][$i]["price"],0,",",".") ?>
-                                            </td>
-                                            <td class="shoping__cart__quantity">
-                                                <div class="quantity">
-                                                    <div class="pro-qty">
-                                                        <input type="text" value='<?= $data["cart"][$i]["qty"] ?>' id="qty-<?= $i ?>" onchange='updateCartQty(`<?= $i ?>`)'>
-                                                    </div>
-                                                </div>
-                                            </td>
-                                            <td class="shoping__cart__total" id="total-<?= $i ?>">
-                                                Rp <?= number_format($data["cart"][$i]["price"] * $data["cart"][$i]["qty"],0,",",".") ?>
-                                            </td>
-                                            <td class="shoping__cart__item__close">
-                                                <span class="icon_close" onclick='removeFromCart(`<?= $i ?>`)'></span>
-                                            </td>
-                                            <input type="hidden" value='<?= $data["cart"][$i]["id_product"] ?>' id="id-<?= $i ?>">
-                                            <input type="hidden" class="weight-product" value='<?= $data["cart"][$i]["weight"] * $data["cart"][$i]["qty"] ?>' id="weight-<?= $data["cart"][$i]["id_seller"] ?>-<?= $i ?>">
-                                        </tr>
+                            <tr>
+                                <td class="shoping__cart__item">
+                                    <img src="<?= $data["cart"]["thumbnail"] ?>" alt="" style="max-width: 100px;">
+                                    <h5><?= $data["cart"]["name"] ?></h5>
+                                </td>
+                                <td class="shoping__cart__price" id="price">
+                                    Rp <?= number_format($data["price"],0,",",".") ?>
+                                </td>
+                                <td class="shoping__cart__quantity">
+                                    <div class="quantity">
+                                        <div class="pro-qty">
+                                            <input type="text" value='<?= $data["qty"] ?>' onchange='updateCartQty()' id="qty">
+                                        </div>
+                                    </div>
+                                </td>
+                                <td class="shoping__cart__total" id="totalPrice">
+                                    Rp <?= number_format($data["price"] * $data["qty"],0,",",".") ?>
+                                </td>
+                                <input type="hidden" value='<?= $data["groupID"] ?>' id="groupID">
+                                <input type="hidden" value='<?= $data["leader"] ?>' id="leaderID">
+                                <input type="hidden" value='<?= $data["cart"]["id_seller"] ?>' id="sellerID">
+                                <input type="hidden" value='<?= $data["cart"]["id_product"] ?>' id="productID">
+                                <input type="hidden" value='<?= $data["cart"]["weight"] ?>' id="weight">
+                                <input type="hidden" value='<?= $data["group_price"] ?>' id="groupPriceID">
+                            </tr>
 
-                                <?php if ($i == (sizeof($data["cart"]) - 1)) { ?>
-
-                                    <tr id="shipment-row-<?= $data["cart"][$i]["id_seller"] ?>">
-                                        <td class="shoping__cart__item" style="padding: 10px 0;">
-                                            <h5 style="font-size: 16px; font-weight:700; text-align: left; margin-bottom: 0.5rem;">Jenis Pengiriman</h5>
-                                            <select class="form-select shipment-option" id="shipment-<?= $data["cart"][$i]["id_seller"] ?>" onchange='updateTotalPrice()'>
-                                                <option selected disabled>Pilih Pengiriman</option>
-                                            </select>
-                                        </td>
-                                        <td class="shoping__cart__price"></td>
-                                        <td class="shoping__cart__quantity" colspan="3">
-                                            <h5 style="font-size: 16px; font-weight:700; text-align: left; margin-bottom: 0.5rem;">Kupon Toko</h5>
-                                            <div class="transaction-voucher voucher-option" id="voucher-<?= $data["cart"][$i]["id_seller"] ?>">
-                                                <div class="transaction-voucher-button" data-toggle="modal" data-target="#modalVoucher" onclick='loadVouchers("<?= $data["cart"][$i]["id_seller"] ?>")'><span><i class="fas fa-tags"></i> Lebih hemat pakai kupon</span><i class="fas fa-angle-right font-20"></i></div>
-                                            </div>
-                                            <input type="hidden" class="discount-voucher" id="discount-<?= $data["cart"][$i]["id_seller"] ?>" value="0">
-                                        </td>
-                                    </tr>
-
-                                <?php } 
-                            } ?>
-
+                            <tr id="shipment-row">
+                                <td class="shoping__cart__item" style="padding: 10px 0;">
+                                    <h5 style="font-size: 16px; font-weight:700; text-align: left; margin-bottom: 0.5rem;">Jenis Pengiriman</h5>
+                                    <select class="form-select shipment-option" id="shipmentProduct" onchange='updateTotalPrice()'>
+                                        <option selected disabled>Pilih Pengiriman</option>
+                                    </select>
+                                </td>
+                                <td class="shoping__cart__price"></td>
+                                <td class="shoping__cart__quantity" colspan="3">
+                                    <h5 style="font-size: 16px; font-weight:700; text-align: left; margin-bottom: 0.5rem;">Kupon Toko</h5>
+                                    <div class="transaction-voucher" id="voucher">
+                                        <div class="transaction-voucher-button" data-toggle="modal" data-target="#modalVoucher" onclick='loadVouchers("<?= $data["cart"]["id_seller"] ?>")'><span><i class="fas fa-tags"></i> Lebih hemat pakai kupon</span><i class="fas fa-angle-right font-20"></i></div>
+                                    </div>
+                                    <input type="hidden" class="discount-voucher" id="discountProduct" value="0">
+                                </td>
+                            </tr>
                         </tbody>
                     </table>
                 </div>
@@ -185,24 +145,15 @@
     function loadShipment() {
         let shipments = $("select.shipment-option")
         let div_shipments = $("div.shipment-option")
-        let id_seller = "", weight = 0
+        let weight = $("#weight").val() * $("#qty").val()
+        let id_seller = ""
         let shipment_result = ""
+        let address = "A0001"
 
         shipments.each(function(index, element) {
-            weight = 0
-            
-            id_seller = $(element).attr("id").split("-")[1]
-
-            let weights = $(".weight-product")
-            weights.each(function(idx, elm) {
-                if ($(elm).attr("id").split("-")[1] == id_seller) {
-                    weight += parseInt($(elm).val())
-                }
-            })
-
             let data = {
-                id_address: "A0001",
-                id_seller: id_seller,
+                id_address: address,
+                id_seller: "<?= $data["cart"]["id_seller"] ?>",
                 weight: weight
             }
 
@@ -247,8 +198,6 @@
                                     minimumFractionDigits: 0,
                                 }).format(courier[j].cost[0].value).replace("IDR", "Rp").replace(/,/g, ".")} </option>`
                         }
-
-                        console.log(courier)
                     }
 
                     $(element).html(html)
@@ -403,40 +352,17 @@
         updateTotalPrice()
     }
 
-    function updateCartQty(cart_row) {
-        let data = {
-            user_id: <?= json_decode($_SESSION["user"])->id ?>,
-            product_id: $("#id-" + cart_row).val(),
-            qty: $("#qty-" + cart_row).val()
-        }
-
-        $.ajax({
-            data: data,
-            url: "{{ url('cart/update-cart-qty') }}",
-            method: 'POST',
-            success: function(result) {
-                updateRowPrice(cart_row)
-                updateCartCount()
-
-                let weights = $(".weight-product")
-                weights.each(function(index, element) {
-                    if ($(element).attr("id").split("-")[2] == cart_row) {
-                        $(element).val(result.message * $("#qty-" + cart_row).val())
-                    }
-                })
-            },
-            error: function (xhr, ajaxOptions, thrownError) {
-                toastr.error(thrownError)
-            }
-        })
+    function updateCartQty() {
+        updateRowPrice()
+        loadShipment()
     }
 
-    function updateRowPrice(cart_row) {
-        let price = parseInt($("#price-" + cart_row).html().trim().split(" ")[1].replace(".",""))
-        let qty = $("#qty-" + cart_row).val()
+    function updateRowPrice() {
+        let price = parseInt($("#price").html().trim().split(" ")[1].replace(".",""))
+        let qty = $("#qty").val()
         let totalPrice = qty * price
 
-        $("#total-" + cart_row).html(new Intl.NumberFormat(undefined, { 
+        $("#totalPrice").html(new Intl.NumberFormat(undefined, { 
             style: 'currency', 
             currency: 'IDR',
             maximumFractionDigits: 0, 
@@ -447,14 +373,11 @@
     }
 
     function updateTotalPrice() {
-        let rows = $(".shoping__cart__total")
         let discounts = $(".discount-voucher")
         let shipments = $("select.shipment-option")
         let totalPrice = 0, servicePrice = 5000, totalDiscount = 0, totalShipment = 0
 
-        rows.each(function(index, element) {
-            totalPrice += parseInt($(element).html().trim().replace("&nbsp;", " ").split(" ")[1].replace(".", ""))
-        })
+        totalPrice = parseInt($("#totalPrice").html().trim().replace("&nbsp;", " ").split(" ")[1].replace(".", ""))
 
         discounts.each(function(index, element) {
             totalDiscount+= parseInt($(element).val())
@@ -497,84 +420,26 @@
         }).format(total).replace("IDR", "Rp").replace(/,/g, "."))
     }
 
-    function removeFromCart(cart_row) {
-        let data = {
-            user_id: <?= json_decode($_SESSION["user"])->id ?>,
-            product_id: $("#id-" + cart_row).val()
-        }
-
-        $.ajax({
-            data: data,
-            url: "{{ url('cart/remove-cart-item') }}",
-            method: 'POST',
-            success: function(result) {
-
-                let rows = $("#tableCart tr")
-                let itemCount = 0
-                let row_id = 0, seller_id = result.message
-
-                rows.each(function(index, element) {
-                    // if this seller id == seller id of deleted item
-                    if (seller_id == $(element).attr("id").split('-')[2]) {
-                        itemCount = 0
-                    }
-
-                    // If element has name attribute
-                    if ($(element).attr("name")) {
-                        // If this seller id == seller id of deleted item
-                        if (seller_id == $(element).attr("name").split('-')[1]) {
-                            itemCount++
-                        }
-                    }
-
-                    // get current row id
-                    row_id = $(element).attr("id").split('-')[2]
-
-                    // remove row of deleted item
-                    if (row_id == cart_row) {
-                        $(element).remove()
-                    }
-                })
-
-                rows = $("#tableCart tr")
-
-                // If last item of seller is deleted, remove seller name
-                if (itemCount == 1) {
-                    rows.each(function(index, element) {
-                        if ($(element).attr("id").split('-')[2] == result.message) {
-                            $(element).remove()
-                        }
-                    })
-                }
-
-                updateCartCount()
-                updateTotalPrice()
-            },
-            error: function (xhr, ajaxOptions, thrownError) {
-                toastr.error(thrownError)
-            }
-        })
-    }
-
     function checkout() {
         let total = parseInt($("#total").text().substr(3).replace(/\./g, ""))
         let coupon = parseInt($("#discount").text().substr(3).replace(/\./g, ""))
         let shipping = parseInt($("#shipment").text().substr(3).replace(/\./g, ""))
 
-        console.log("total : ", total)
-        console.log("coupon : ", coupon)
-        console.log("shipping : ", shipping)
-
         $.ajax({
             data: {
+                id_group: $("#groupID").val(),
+                id_leader: $("#leaderID").val(),
+                id_seller: $("#sellerID").val(),
+                id_product: $("#productID").val(),
+                qty: $("#qty").val(),
+                id_group_price: $("#groupPriceID").val(),
                 total: total,
                 coupon: coupon,
                 shipping: shipping
             },
-            url: "{{ url('checkout') }}",
+            url: "{{ url('group/checkout') }}",
             method: 'POST',
             success: function(result) {
-                console.log(result)
                 let transID = result.trans_id
 
                 // Trigger snap popup.
@@ -593,6 +458,7 @@
                                 toastr.error(thrownError)
                             }
                         })
+
                         window.location.href = "/"
                     },
                     onPending: function(result){

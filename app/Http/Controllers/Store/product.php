@@ -4,7 +4,10 @@ namespace App\Http\Controllers\Store;
 
 use App\Http\Controllers\Controller;
 use App\Models\Category;
+use App\Models\Group;
+use App\Models\Group_price;
 use App\Models\Product as ModelsProduct;
+use App\Models\Product_thumbnail;
 use App\Models\Seller;
 use App\Models\T_detail;
 use App\Models\T_head;
@@ -30,12 +33,58 @@ class product extends Controller
         }
     }
 
+    public function loadGroupPayment(Request $request) {
+        session_start();
+
+        $data = [];
+        $data["categories"]     = Category::all();
+        $data["cart"]           = ModelsProduct::select("products.id_product","products.thumbnail", "products.name", "products.price", "products.weight", "sellers.id_seller", "sellers.name as seller_name", "sellers.profile_picture")
+                                    ->where("products.id_product", $request->input("productID"))
+                                    ->join("sellers", "sellers.id_seller", "=", "products.id_seller")->orderBy("sellers.id_seller")
+                                    ->first();
+        $data["price"]          = Group_price::where("id", $request->input("groupPriceSelect"))->first()->price;
+        $data["group_price"]    = $request->input("groupPriceSelect");
+        $data["qty"]            = str_replace('.', '', $request->input("groupQtyPurchase"));
+        $data["leader"]         = $request->input("leaderID");
+        $data["groupID"]        = $request->input("groupID");
+
+        return view('Store.group-payment', ["data" => $data]);
+    }
+
+    public function loadJoinGroupPayment(Request $request) {
+        session_start();
+
+        $data = [];
+        $data["categories"]     = Category::all();
+        $data["cart"]           = ModelsProduct::select("products.id_product","products.thumbnail", "products.name", "products.price", "products.weight", "sellers.id_seller", "sellers.name as seller_name", "sellers.profile_picture")
+                                    ->where("products.id_product", $request->input("productID"))
+                                    ->join("sellers", "sellers.id_seller", "=", "products.id_seller")->orderBy("sellers.id_seller")
+                                    ->first();
+        $data["price"]          = Group_price::where("id", $request->input("groupPriceID"))->first()->price;
+        $data["group_price"]    = $request->input("groupPriceID");
+        $data["qty"]            = str_replace('.', '', $request->input("joinQtyPurchase"));
+        $data["leader"]         = $request->input("leaderID");
+        $data["groupID"]        = $request->input("groupID");
+
+        return view('Store.group-payment', ["data" => $data]);
+    }
+
     public function detail($product_name) {
-        $data               = [];
-        $data["categories"] = Category::all();
-        $data["item"]       = ModelsProduct::where("products.name", urldecode($product_name))->first();
-        $data["search"]     = "";
-        $data["store"]      = ModelsProduct::where("products.name", urldecode($product_name))->join("sellers", "products.id_seller", "=", "sellers.id_seller")->first();
+        $productID = ModelsProduct::where("products.name", urldecode($product_name))->first()->id_product;
+
+        $data                   = [];
+        $data["categories"]     = Category::all();
+        $data["item"]           = ModelsProduct::where("products.name", urldecode($product_name))->first();
+        $data["search"]         = "";
+        $data["store"]          = ModelsProduct::where("products.name", urldecode($product_name))->join("sellers", "products.id_seller", "=", "sellers.id_seller")->first();
+        $data["product_images"] = Product_thumbnail::where("id_product", $productID)->get();
+        $data["prices"]         = Group_price::where("id_product", $productID)->get();
+        $data["groups"]         = Group::where("groups.id_product", $productID)
+                                    ->join("users", "users.id_user", "=", "groups.id_leader")
+                                    ->join("group_prices", "group_prices.id", "=", "groups.id_group_price")
+                                    ->get();
+
+        // dd($data["groups"]);
 
         return view('Store.detail', ["data" => $data]);
     }
@@ -66,6 +115,23 @@ class product extends Controller
             'maxPrice'  => $request->input("max_price"),
             'minStock'  => $request->input("min_stock")
         ], 200);
+    }
+
+    public function getGroup(Request $request) {
+        $data = [];
+        $data["group"] = Group::where("groups.id_group", $request->input("id_group"))
+                            ->join("users", "users.id_user", "=", "groups.id_leader")
+                            ->join("group_prices", "group_prices.id", "=", "groups.id_group_price")
+                            ->get();
+
+        return json_encode($data);
+    }
+
+    public function getPrices(Request $request) {
+        $data = [];
+        $data["prices"] = Group_price::where("id_product", $request->input("product_id"))->get();
+
+        return json_encode($data);
     }
 
     public function loadSeller($sellerName, $sellerID) {

@@ -12,7 +12,9 @@ class favorite extends Controller
     public function load() {
         session_start();
 
-        $favorite = ModelsFavorite::where("id_user", json_decode($_SESSION["user"])->id_user)->join("products", "products.id_product", "=", "wishlists.id_product")->get();
+        $favorite = ModelsFavorite::where("id_user", json_decode($_SESSION["user"])->id_user)
+                                    ->join("products", "products.id_product", "=", "favorites.id_product")
+                                    ->get();
 
         $data               = []; 
         $data["categories"] = Category::all();
@@ -38,32 +40,6 @@ class favorite extends Controller
             $favorite               = new ModelsFavorite();
             $favorite->id_user      = json_decode($_SESSION["user"])->id_user;
             $favorite->id_product   = $request->input("product_id");
-            $favorite->save();
-
-            return response()->json([
-                'success' => true,
-                'message' => 'Added to favorite'
-            ], 200);
-        }
-    }
-
-    public function addFavoriteStore(Request $request) {
-        session_start();
-
-        $favorite = ModelsFavorite::where("id_seller", $request->input("seller_id"))->where("id_user", json_decode($_SESSION["user"])->id_user)->first();
-
-        if ($favorite !== null) {
-            $favorite->delete();
-
-            return response()->json([
-                'success' => true,
-                'message' => 'Removed from favorite'
-            ], 200);
-        } else {
-            $favorite               = new ModelsFavorite();
-            $favorite->id_user      = json_decode($_SESSION["user"])->id_user;
-            $favorite->id_store     = $request->input("seller_id");
-            $favorite->id_product   = "";
             $favorite->save();
 
             return response()->json([

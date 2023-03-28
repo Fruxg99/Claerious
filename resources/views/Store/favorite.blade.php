@@ -1,5 +1,5 @@
 @extends('Template.store')
-@section('title', 'Claerious - Wishlist')
+@section('title', 'Claerious - Favorite')
 
 @section('content')
 
@@ -54,7 +54,7 @@
             <div class="col-lg-3 col-md-5">
                 <div class="sidebar">
                     <div class="sidebar__item">
-                        <h4>Wishlist</h4>
+                        <h4>Favorit</h4>
                     </div>
                 </div>
             </div>
