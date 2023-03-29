@@ -871,7 +871,7 @@
 
         $.ajax({
             data: {
-                id_address: id_address,
+                id_address: addressID,
                 total: total,
                 coupon: coupon,
                 shipping: shipping
