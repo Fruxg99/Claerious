@@ -510,18 +510,77 @@ class main extends Controller
 
         if ($mode == "get") {
             $groups = Group_members::where("id_user", json_decode($_SESSION["user"])->id_user)
-                        ->join("groups", "groups.id_gruop", "=", "group_members.id_group")
+                        ->join("groups", "groups.id_group", "=", "group_members.id_group")
                         ->get();
 
             return $groups;
+        } else if ($mode == "getByUser") {
+            $groups = Group_members::select("groups.id_group", "groups.target_accumulation", "groups.current_accumulation", "products.name as product_name", "products.thumbnail", "users.name as user_name", "groups.id_leader")
+                        ->where("group_members.id_user", json_decode($_SESSION["user"])->id_user)
+                        ->leftJoin("groups", "groups.id_group", "=", "group_members.id_group")
+                        ->leftJoin("users", "users.id_user", "=", "groups.id_leader")
+                        ->leftJoin("products", "products.id_product", "=", "groups.id_product")
+                        ->get();
+            
+            return $groups;
         } else if ($mode == "selectById") {
-            $voucher = Voucher::where("id_voucher", $request->input("id_voucher"))->first();
+            $group = Group::where("id_group", $request->input("id_group"))->first();
             
-            return $voucher;
-        } else if ($mode == "update") {
+            return $group;
+        } else if ($mode == "leave") {
+            $group_member = Group_members::where("id_group", $request->input("id_group"))
+                                ->where("id_user", json_decode($_SESSION["user"])->id_user)
+                                ->get();
 
-        } else if ($mode == "delete") {
+            $group = Group::where("id_group", $request->input("id_group"))->first();
+
+            for($i = 0 ; $i < sizeof($group_member) ; $i++) {
+                $group->current_accumulation -= $group_member[$i]->total_purchase;
+            }
+
+            $group_member = Group_members::where("id_group", $request->input("id_group"))
+                                ->where("id_user", json_decode($_SESSION["user"])->id_user)
+                                ->delete();
+
+            $transactions = T_head::where("id_user", json_decode($_SESSION["user"])->id_user)
+                            ->where("id_group", $request->input("id_group"))
+                            ->where("status", ">", 1)
+                            ->get();
             
+            $total = 0;
+            for($i = 0 ; $i < sizeof($transactions) ; $i++) {
+                $total += $transactions[$i]->total;
+            }
+
+            $allTransaction = T_head::where("id_user", json_decode($_SESSION["user"])->id_user)
+                            ->where("id_group", $request->input("id_group"))
+                            ->get();
+
+            for($i = 0 ; $i < sizeof($allTransaction) ; $i++) {
+                T_detail::where("id_trans", $allTransaction[$i]->id_trans)->delete();
+            }
+            T_head::where("id_user", json_decode($_SESSION["user"])->id_user)
+                            ->where("id_group", $request->input("id_group"))
+                            ->delete();
+
+            $user = User::where("id_user", json_decode($_SESSION["user"])->id_user)->first();
+            $user->saldo += intVal($total);
+            $user->save();
+
+        } else if ($mode == "disband") {
+            $group_member = Group_members::where("id_group", $request->input("id_group"))->delete();
+            $transactions = T_head::where("id_group", $request->input("id_group"))->get();
+
+            for($i = 0 ; $i < sizeof($transactions) ; $i++) {
+                $user = User::where("id_user", $transactions[$i]->id_user)->first();
+                $user->saldo += intVal($transactions[$i]->total);
+                $user->save();
+
+                T_detail::where("id_trans", $transactions[$i]->id_trans)->delete();
+            }
+
+            Group::where("id_group", $request->input("id_group"))->delete();
+            T_head::where("id_group", $request->input("id_group"))->delete();
         }
     }
 
@@ -558,7 +617,6 @@ class main extends Controller
                                         ->leftJoin("sellers", "sellers.id_seller", "=", "t_details.id_seller")
                                         ->orderBy("sellers.id_seller")
                                         ->get();
-            // $data["items"]          = T_detail::where("t_details.id_trans", $request->input("id_trans"))->get();
 
             return json_encode($data);
         }

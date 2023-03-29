@@ -73,6 +73,21 @@
             <div class="bg-white py-2 collapse-inner rounded">
                 <a class="collapse-item" href="buttons.html">Laporan Penjualan</a>
             </div>
+            <div class="bg-white py-2 collapse-inner rounded">
+                <a class="collapse-item" href="buttons.html">Laporan Stok</a>
+            </div>
+            <div class="bg-white py-2 collapse-inner rounded">
+                <a class="collapse-item" href="buttons.html">Laporan Pendapatan</a>
+            </div>
+            <div class="bg-white py-2 collapse-inner rounded">
+                <a class="collapse-item" href="buttons.html">Laporan Transaksi Seller</a>
+            </div>
+            <div class="bg-white py-2 collapse-inner rounded">
+                <a class="collapse-item" href="buttons.html">Laporan Voucher</a>
+            </div>
+            <div class="bg-white py-2 collapse-inner rounded">
+                <a class="collapse-item" href="buttons.html">Laporan User</a>
+            </div>
         </div>
     </li>
 

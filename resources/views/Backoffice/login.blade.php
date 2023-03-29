@@ -56,10 +56,6 @@
                                         <a class="btn btn-primary btn-user btn-block" style="cursor: pointer;" onclick="login()">
                                             Masuk
                                         </a>
-                                        <hr>
-                                        <a class="btn btn-google btn-user btn-block" style="cursor: pointer;" onclick="loginGoogle()">
-                                            <i class="fab fa-google fa-fw"></i> Masuk dengan Google
-                                        </a>
                                     </form>
                                     <div class="text-center mt-3">
                                         <a class="small" href="forgot-password.html">Lupa Sandi?</a>
@@ -108,18 +104,6 @@
                     }
                 }
             })
-        }
-
-        function loginGoogle() {
-            $.ajax({
-                url: "{{ url('session/seller') }}",
-                method: 'GET',
-                success: function(result) {
-                    
-                }
-            })
-
-            window.location.href = "{{ url('auth/google') }}"
         }
     </script>
 </body>

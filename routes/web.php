@@ -5,6 +5,7 @@ use App\Http\Controllers\Backoffice\item;
 use App\Http\Controllers\Backoffice\mainBackoffice;
 use App\Http\Controllers\Backoffice\report;
 use App\Http\Controllers\Backoffice\storefront;
+use App\Http\Controllers\Backoffice\transaction;
 use App\Http\Controllers\Backoffice\variant;
 use App\Http\Controllers\Backoffice\voucher;
 use App\Http\Controllers\GoogleController;
@@ -29,7 +30,7 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::domain('backoffice.claerious.store')->group(function () {
+// Route::domain('backoffice.claerious.store')->group(function () {
     // Google Auth
     Route::get('/session/seller', [GoogleController::class, 'sessionGoogle']);
     Route::get('/auth/google', [GoogleController::class, 'redirectToGoogle']);
@@ -44,6 +45,12 @@ Route::domain('backoffice.claerious.store')->group(function () {
     Route::controller(item::class)->group(function () {
         Route::any('/product', 'load');
         Route::post('/product/{mode}', 'crud');
+    });
+
+    // Transaction Controller
+    Route::controller(transaction::class)->group(function () {
+        Route::any('/transaction', 'load');
+        Route::post('/transaction/{mode}', 'crud');
     });
 
     // Main Backoffice Controller
@@ -65,9 +72,9 @@ Route::domain('backoffice.claerious.store')->group(function () {
         Route::get('/voucher', 'load');
         Route::post('/voucher/{mode}', 'crud');
     });
-});
+// });
 
-// Route::domain('www.claerious.store')->group(function () {
+Route::domain('www.claerious.store')->group(function () {
     Route::get('/store', function () {
         return view('Template.store');
     });
@@ -129,7 +136,6 @@ Route::domain('backoffice.claerious.store')->group(function () {
         Route::post('/shipment/{mode}', 'shipmentCRUD');
         Route::post('/voucher/{mode}', 'voucherCRUD');
         Route::post('/group/{mode}', 'groupCRUD');
-
     });
 
     // Product Controller
@@ -142,6 +148,7 @@ Route::domain('backoffice.claerious.store')->group(function () {
         Route::post('/product/get-group', 'getGroup');
         Route::post('/product/group/payment', 'loadGroupPayment');
         Route::post('/product/group/join', 'loadJoinGroupPayment');
+        Route::post('/product/review', 'reviewProduct');
 
         Route::get('/seller/{seller_name}/{seller_id}', 'loadSeller');
         Route::post('/seller/filter', 'sellerFilter');
@@ -162,4 +169,4 @@ Route::domain('backoffice.claerious.store')->group(function () {
         Route::post('/favorite/favorite-count', 'favoriteCount');
         Route::post('/favorite/check-favorite', 'checkFavorite');
     });
-// });
+});

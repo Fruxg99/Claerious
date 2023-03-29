@@ -9,6 +9,7 @@ use App\Models\Group;
 use App\Models\Group_price;
 use App\Models\Product as ModelsProduct;
 use App\Models\Product_thumbnail;
+use App\Models\Review;
 use App\Models\Seller;
 use App\Models\T_detail;
 use App\Models\T_head;
@@ -120,6 +121,26 @@ class product extends Controller
         $data["provinces"]      = json_decode($provinces)->rajaongkir->results;
 
         return view('Store.group-payment', ["data" => $data]);
+    }
+
+    public function reviewProduct(Request $request) {
+        session_start();
+
+        $transList = T_detail::where("id_trans", $request->input("id_trans"))->get();
+
+        for($i = 0 ; $i < sizeof($transList) ; $i++) {
+            $review = new Review();
+            $review->id_user    = json_decode($_SESSION["user"])->id_user;
+            $review->id_product = $transList[$i]->id_product;
+            $review->rating     = $request->input("rating");
+            $review->review     = $request->input("review");
+            $review->save();
+
+            $product = ModelsProduct::where("id_product", $transList[$i]->id_product)->first();
+            $product->rating_count += 1;
+            $product->rating        = number_format(((floatVal($product->rating) * (intVal($product->rating_count) - 1)) + intVal($request->input("rating"))) / intVal($product->rating_count), 2);
+            $product->save();
+        }
     }
 
     public function detail($product_name) {

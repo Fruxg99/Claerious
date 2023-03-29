@@ -150,40 +150,38 @@
         <div class="modal-content">
             <div class="modal-body">
                 <div class="card shadow">
-                    <!-- <form action="{{ url('/add-address') }}" method="POST"> -->
-                        <div class="card-header py-3">
-                            <h5 class="m-0 font-weight-bold text-primary">Buat Kata Sandi</h5>
-                        </div>
-                        <div class="card-body">
-                            <div class="row">
-                                <div class="form-group col-12">
-                                    <label>Kata Sandi<small class="text-danger">*</small></label>
-                                    <div class="input-group">
-                                        <input type="password" class="form-control form-control-user" id="userPass" name="userPass">
-                                        <div class="input-group-append">
-                                            <button class="btn btn-outline-secondary" type="button" onclick="togglePass('userPass')" id="toggle_userPass"><i class="fa-solid fa-eye"></i></button>
-                                        </div>
+                    <div class="card-header py-3">
+                        <h5 class="m-0 font-weight-bold text-primary">Buat Kata Sandi</h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="form-group col-12">
+                                <label>Kata Sandi<small class="text-danger">*</small></label>
+                                <div class="input-group">
+                                    <input type="password" class="form-control form-control-user" id="userPass" name="userPass">
+                                    <div class="input-group-append">
+                                        <button class="btn btn-outline-secondary" type="button" onclick="togglePass('userPass')" id="toggle_userPass"><i class="fa-solid fa-eye"></i></button>
                                     </div>
                                 </div>
                             </div>
-                            <div class="row">
-                                <div class="form-group col-12">
-                                    <label>Ulangi Kata Sandi<small class="text-danger">*</small></label>
-                                    <div class="input-group">
-                                        <input type="password" class="form-control form-control-user" id="userCPass" name="userCPass">
-                                        <div class="input-group-append">
-                                            <button class="btn btn-outline-secondary" type="button" onclick="togglePass('userCPass')" id="toggle_userCPass"><i class="fa-solid fa-eye"></i></button>
-                                        </div>
+                        </div>
+                        <div class="row">
+                            <div class="form-group col-12">
+                                <label>Ulangi Kata Sandi<small class="text-danger">*</small></label>
+                                <div class="input-group">
+                                    <input type="password" class="form-control form-control-user" id="userCPass" name="userCPass">
+                                    <div class="input-group-append">
+                                        <button class="btn btn-outline-secondary" type="button" onclick="togglePass('userCPass')" id="toggle_userCPass"><i class="fa-solid fa-eye"></i></button>
                                     </div>
                                 </div>
-                                
                             </div>
-                            <div class="modal-footer">
-                                <button type="button" class="btn btn-secondary" data-dismiss="modal" onclick="resetModalPassword()">Batal</button>
-                                <button type="button" class="btn btn-primary" onclick="addUserPassword()" id="btnItemModal">Simpan</button>
-                            </div>
+                            
                         </div>
-                    <!-- </form> -->
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal" onclick="resetModalPassword()">Batal</button>
+                            <button type="button" class="btn btn-primary" onclick="addUserPassword()" id="btnItemModal">Simpan</button>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -282,6 +280,43 @@
                         <div class="row">
                             <div class="col-7"><b>Total</b></div>
                             <div class="col-3" id="totalPrice" style="font-weight: 700;"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="reviewModal" tabindex="-1" role="dialog" aria-labelledby="reviewModal" aria-hidden="true" data-backdrop="static" data-keyboard="false">
+    <div class="modal-dialog"  role="document">
+        <div class="modal-content">
+            <div class="modal-body">
+                <div class="card shadow">
+                    <div class="card-header py-3">
+                        <h5 class="m-0 font-weight-bold text-primary">Beri Ulasan</h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="form-group col-12">
+                                <label>Rating (1-5)<small class="text-danger">*</small></label>
+                                <div class="input-group">
+                                    <input type="text" class="form-control form-control-user" id="reviewRating">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="form-group col-12">
+                                <label>Ulasan<small class="text-danger">*</small></label>
+                                <div class="input-group">
+                                    <input type="text" class="form-control form-control-user" id="reviewContent">
+                                </div>
+                            </div>
+                            
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal" onclick="resetModalReview()">Batal</button>
+                            <button type="button" class="btn btn-primary" onclick="addReview()" id="btnReviewModal">Ulas</button>
                         </div>
                     </div>
                 </div>
@@ -443,8 +478,6 @@
                 result = JSON.parse(result)
                 historyTrans = result.transaction
 
-                console.log(historyTrans)
-
                 let html = `
                     <table class="table table-hover" style="margin-top: 12px; text-align: center;">
                         <thead style="">
@@ -460,18 +493,17 @@
                 `
                 for (let i = 0 ; i < historyTrans.length ; i++) {
                     html += `
-                            <tr onclick="showDetailTransaction('${historyTrans[i].id_trans}')" style="cursor: pointer;">
-                                <td>${dateFormat(historyTrans[i].created_at)}</td>
-                                <td>${historyTrans[i].receiver_name}</td>
-                                <td>${historyTrans[i].address}</td>
-                                <td>${new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR', maximumFractionDigits: 0 }).format(historyTrans[i].total)}</td>`
+                            <tr style="cursor: pointer;">
+                                <td onclick="showDetailTransaction('${historyTrans[i].id_trans}')">${dateFormat(historyTrans[i].created_at)}</td>
+                                <td onclick="showDetailTransaction('${historyTrans[i].id_trans}')">${historyTrans[i].receiver_name}</td>
+                                <td onclick="showDetailTransaction('${historyTrans[i].id_trans}')">${historyTrans[i].address}</td>
+                                <td onclick="showDetailTransaction('${historyTrans[i].id_trans}')">${new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR', maximumFractionDigits: 0 }).format(historyTrans[i].total)}</td>`
                     
                     if (historyTrans[i].status == 0) {
                         html += `<td>Dibatalkan</td>`
                     } else if (historyTrans[i].status == 1) {
                         html += `<td>
-                                    Belum Dibayar<br>
-                                    <button class="btn btn-secondary" onclick="payTransaction('${historyTrans[i].id_trans}')">Bayar Sekarang</button>
+                                    <button class="btn btn-secondary" onclick="payTransaction('${historyTrans[i].id_trans}')">Bayar</button>
                                 </td>`
                     } else if (historyTrans[i].status == 2) {
                         html += `<td>Menunggu Diproses</td>`
@@ -481,8 +513,7 @@
                         html += `<td>Dalam Pengiriman</td>`
                     } else if (historyTrans[i].status == 5) {
                         html += `<td>
-                                    Belum Diulas
-                                    <button class="btn btn-secondary" onclick="addRating('${historyTrans[i].id_trans}')">Beri Ulasan</button>
+                                    <button class="btn btn-secondary" onclick="loadReview('${historyTrans[i].id_trans}')">Beri Ulasan</button>
                                 </td>`
                     } else if (historyTrans[i].status == 6) {
                         html += `<td>Terulas</td>`
@@ -505,6 +536,30 @@
         })
     }
 
+    function loadReview(id_trans) {
+        $("#btnReviewModal").attr("onclick", "addReview('" + id_trans + "')")
+        $("#reviewModal").modal('show')
+        $("#transactionModal").modal('hide')
+    }
+
+    function addReview(id_trans) {
+        $.ajax({
+            data: {
+                id_trans: id_trans,
+                rating: $("#reviewRating").val(),
+                review: $("#reviewContent").val()
+            },
+            url: "{{ url('product/review') }}",
+            method: 'POST',
+            success: function(result) {
+                toastr.success("Produk berhasil diulas")
+            },
+            error: function (xhr, ajaxOptions, thrownError) {
+                toastr.error(thrownError)
+            }
+        })
+    }
+
     function payTransaction(id_trans) {
         $.ajax({
             data: {
@@ -514,7 +569,6 @@
             method: 'POST',
             success: function(result) {
                 result = JSON.parse(result)
-                console.log(result)
 
                 // Trigger snap popup.
                 window.snap.pay(result.snap_token, {
@@ -575,8 +629,6 @@
     }
 
     function showDetailTransaction(id_trans) {
-        console.log(id_trans)
-
         $.ajax({
             url: "profile/transaction/getDetails",
             method: "POST",
@@ -613,9 +665,6 @@
                 $("#shipmentPrice").html(new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR', maximumFractionDigits: 0 }).format(detailTrans.shipping_cost))
                 $("#discountPrice").html(new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR', maximumFractionDigits: 0 }).format(detailTrans.coupon))
                 $("#totalPrice").html(new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR', maximumFractionDigits: 0 }).format(detailTrans.total))
-
-                console.log(detailTrans)
-                console.log(detailItems)
             }
         })
     }
@@ -637,40 +686,99 @@
 
     function showGroup() {
         $.ajax({
-            url: "{{ url('group/get') }}",
+            url: "{{ url('group/getByUser') }}",
             method: 'POST',
             success: function(result) {
-                result = JSON.parse(result)
+                // result = JSON.parse(result)
 
-                let html = `
-                    <div style="margin-top: 12px;">` +
-                        `<button class="btn btn-primary rounded" style="background-color: #4179E8; border: none; outline: none; margin: 0 12px 0 auto; display: block;" data-toggle="modal" data-target="#addressModal">` +
-                            `<i class="fas fa-plus" style="margin-right: 7px;"></i> Tambah Alamat` +
-                        `</button>` +
-                    `</div>
-                `;
+                console.log(result)
 
-                if (result.length > 0) {
-                    for(let i = 0 ; i < result.length ; i++) {
-                        html += 
-                            `<div class='profile-address'>
-                                <div class='list-alamat-content'>
-                                    <div style="font-weight: 600;">${result[i].label}</div>
-                                    <div style="font-size: 14px;">${result[i].receiver_name}</div>
-                                    <div style="font-size: 14px;">${result[i].address}, ${result[i].city_name}</div>
-                                    <div style="font-size: 14px;">${result[i].receiver_phone}</div>
-                                </div>
-                                <div class='profile-address-action'>
-                                    <button class='btn btn-danger rounded btn-alamat-hapus' onclick='removeShipmentInfo("${result[i].id_address}")'><i class='fas fa-trash-alt'></i></button>
-                                </div>
-                            </div><hr>`
-                    }
-                } else {
-                    html += "<h4 style='opacity: 0.75; margin: 0 32px; text-transform: none;'>Anda belum punya alamat pengiriman</h4>"
+                let html = `<table class="table">
+                                <thead>
+                                    <tr>
+                                        <th scope="col">Grup</th>
+                                        <th scope="col">Gambar Produk</th>
+                                        <th scope="col">Nama Produk</th>
+                                        <th scope="col">Produk Terbeli</th>
+                                        <th scope="col">Opsi</th>
+                                    </tr>
+                                </thead>
+                                <tbody>`;
+
+                for(let i = 0 ; i < result.length ; i++) {
+                    html += `<tr>
+                                <td>Grup ${result[i].user_name}</td>
+                                <td><img src="${result[i].thumbnail}" style="max-width: 100px; max-height: 100px;"></td>
+                                <td>${result[i].product_name}</td>
+                                <td>${result[i].current_accumulation} / ${result[i].target_accumulation}</td>
+                                <td>`
+                    
+                                if (result[i].id_leader == "<?= json_decode($_SESSION["user"])->id_user ?>") {
+                                    if (result[i].current_accumulation >= result[i].target_accumulation) {
+                                        html += `<button class="btn btn-secondary" onclick="finishGroup('${result[i].id_group}')">Teruskan Pesanan</button>`
+                                    } else {
+                                        html += `<button class="btn btn-secondary" onclick="disbandGroup('${result[i].id_group}')">Bubarkan Grup</button>`
+                                    }
+                                } else {
+                                    html += `<button class="btn btn-secondary" onclick="leaveGroup('${result[i].id_group}')">Keluar Grup</button>`
+                                }
+                                        
+                        html += `</td>
+                            </tr>`
                 }
 
-                $("#contentAddress").html(html)
-                $("hr").last().remove()
+                html += `</tbody>
+                        </table>`
+
+                $("#contentGroup").html(html)
+            }
+        })
+    }
+
+    function disbandGroup(id_group) {
+        $.ajax({
+            data: {
+                id_group: id_group
+            },
+            url: "{{ url('/group/disband') }}",
+            method: 'POST',
+            success: function(result) {
+                showGroup()
+            },
+            error: function (xhr, ajaxOptions, thrownError) {
+                
+            }
+        })
+    }
+    
+    function finishGroup(id_group) {
+        $.ajax({
+            data: {
+                id_group: id_group
+            },
+            url: "{{ url('/group/finish') }}",
+            method: 'POST',
+            success: function(result) {
+                showGroup()
+            },
+            error: function (xhr, ajaxOptions, thrownError) {
+                
+            }
+        })
+    }
+
+    function leaveGroup(id_group) {
+        $.ajax({
+            data: {
+                id_group: id_group
+            },
+            url: "{{ url('/group/leave') }}",
+            method: 'POST',
+            success: function(result) {
+                showGroup()
+            },
+            error: function (xhr, ajaxOptions, thrownError) {
+                
             }
         })
     }
@@ -688,9 +796,7 @@
         } else if (id == "Transaction") {
             showTransaction()
         } else if (id =="Group") {
-
-        } else {
-
+            showGroup()
         }
     }
 
@@ -711,8 +817,6 @@
                 }
 
                 $("#city").html(html)
-                // $("#city").trigger('change')
-
                 html = ``
 
                 for(let i = 0 ; i < result.length ; i++) {
@@ -881,6 +985,12 @@
         $("#userCPass").val("")
     }
 
+    function resetModalReview() {
+        $("#reviewRating").val("")
+        $("#reviewContent").val("")
+        $("#btnReviewModal").attr("onclick", "addReview()")
+    }
+
     function togglePass(element) {
         if ($("#" + element).attr("type") == "password") {
             $("#" + element).attr("type", "text")
@@ -890,6 +1000,23 @@
             $("#toggle_" + element).html(`<i class="fa-solid fa-eye"></i>`)
         }
     }
+
+    $("#reviewRating").keyup(function() {
+        var value = $(this).val()
+        var result = autoNumeric(value)
+        rawValue = parseInt(result.split('.').join(''))
+
+        $(this).val(result)
+    })
+    $("#reviewRating").keydown(function(event) {
+        var value = $(this).val()
+
+        if (checkNumericInputWithZero(event.keyCode, value)) {
+            return true
+        } else {
+            return false
+        }
+    })
 </script>
 
 @endsection

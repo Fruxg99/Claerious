@@ -35,6 +35,7 @@
                             if (isset($_SESSION["user"])) {
                         ?>
 
+                            <li><a href="{{ url('/chat') }}"><i class="fa fa-comments"></i></a></li>
                             <li><a href="{{ url('/favorite') }}"><i class="fa fa-star"></i> <span class="favoriteCount">0</span></a></li>
                             <li><a href="{{ url('/wishlist') }}"><i class="fa fa-heart"></i> <span class="wishlistCount">0</span></a></li>
                             <li><a href="{{ url('/cart') }}"><i class="fa fa-shopping-bag"></i> <span class="cartCount">0</span></a></li>
