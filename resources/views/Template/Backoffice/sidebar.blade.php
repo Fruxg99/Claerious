@@ -71,22 +71,22 @@
         </a>
         <div id="collapseTwo" class="collapse" aria-labelledby="report" data-parent="#accordionSidebar">
             <div class="bg-white py-2 collapse-inner rounded">
-                <a class="collapse-item" href="buttons.html">Laporan Penjualan</a>
-            </div>
-            <div class="bg-white py-2 collapse-inner rounded">
-                <a class="collapse-item" href="buttons.html">Laporan Stok</a>
-            </div>
-            <div class="bg-white py-2 collapse-inner rounded">
-                <a class="collapse-item" href="buttons.html">Laporan Pendapatan</a>
-            </div>
-            <div class="bg-white py-2 collapse-inner rounded">
-                <a class="collapse-item" href="buttons.html">Laporan Transaksi Seller</a>
-            </div>
-            <div class="bg-white py-2 collapse-inner rounded">
-                <a class="collapse-item" href="buttons.html">Laporan Voucher</a>
-            </div>
-            <div class="bg-white py-2 collapse-inner rounded">
-                <a class="collapse-item" href="buttons.html">Laporan User</a>
+                <a class="collapse-item" href="{{ url('/report/sales') }}">Laporan Penjualan</a>
+                <a class="collapse-item" href="{{ url('/report/stock') }}">Laporan Stok</a>
+
+                <?php 
+                    if (json_decode($_SESSION["seller"])->id_user == "Admin") {
+                ?>
+
+                    <a class="collapse-item" href="{{ url('/report/income') }}">Laporan Pendapatan</a>
+                    <a class="collapse-item" href="{{ url('/report/seller') }}">Laporan Transaksi Seller</a>
+                    <a class="collapse-item" href="{{ url('/report/voucher') }}">Laporan Voucher</a>
+                    <a class="collapse-item" href="{{ url('/report/user') }}">Laporan User</a>
+
+                <?php 
+                    }
+                ?>
+                
             </div>
         </div>
     </li>

@@ -60,6 +60,24 @@ use Illuminate\Support\Facades\Route;
         Route::get('/logout', 'logout');
         Route::get('/category', 'loadCategory');
         Route::post('/category/{mode}', 'crudCategory');
+
+        Route::get('/report/sales', 'loadSalesReport');
+        Route::post('/report/sales/{mode}', 'salesReportCRUD');
+        
+        Route::get('/report/stock', 'loadStockReport');
+        Route::post('/report/stock/{mode}', 'stockReportCRUD');
+
+        Route::get('/report/income', 'loadIncomeReport');
+        Route::post('/report/income/{mode}', 'incomeReportCRUD');
+
+        Route::get('/report/seller', 'loadSellerReport');
+        Route::post('/report/seller/{mode}', 'sellerReportCRUD');
+
+        Route::get('/report/voucher', 'loadVoucherReport');
+        Route::post('/report/voucher/{mode}', 'voucherReportCRUD');
+
+        Route::get('/report/user', 'loadUserReport');
+        Route::post('/report/user/{mode}', 'userReportCRUD');
     });
 
     // Report Controller
