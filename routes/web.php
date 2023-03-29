@@ -30,7 +30,7 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-// Route::domain('backoffice.claerious.store')->group(function () {
+Route::domain('backoffice.claerious.store')->group(function () {
     // Google Auth
     Route::get('/session/seller', [GoogleController::class, 'sessionGoogle']);
     Route::get('/auth/google', [GoogleController::class, 'redirectToGoogle']);
@@ -90,9 +90,9 @@ use Illuminate\Support\Facades\Route;
         Route::get('/voucher', 'load');
         Route::post('/voucher/{mode}', 'crud');
     });
-// });
+});
 
-Route::domain('www.claerious.store')->group(function () {
+// Route::domain('www.claerious.store')->group(function () {
     Route::get('/store', function () {
         return view('Template.store');
     });
@@ -187,4 +187,4 @@ Route::domain('www.claerious.store')->group(function () {
         Route::post('/favorite/favorite-count', 'favoriteCount');
         Route::post('/favorite/check-favorite', 'checkFavorite');
     });
-});
+// });

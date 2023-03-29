@@ -202,7 +202,7 @@
             url: "{{ url('product/filter') }}",
             method: 'POST',
             success: function(result) {
-                products = result.message
+                let products = result.message
 
                 $("#productCount").html(products.length)
                 showList(products)
