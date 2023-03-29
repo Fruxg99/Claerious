@@ -422,7 +422,7 @@
             success: function(result) {
                 result = JSON.parse(result)
 
-                id_address = result.id_address
+                addressID = result.id_address
 
                 let html = `<div class='profile-address' style="border: 1px solid #4179E8; border-radius: 20px; padding: 30px 40px;">
                         <div class='list-alamat-content'>
